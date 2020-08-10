@@ -1,0 +1,57 @@
+SplashKit Animation
+
+//Multi-frame: ranges are in[]
+//[a-b] = numbers from a to b inclusive
+//[a,b,c] = explicit values
+//[a-b,c] = combination
+
+//NEW
+
+//============================Walking
+
+//WalkUp
+f: [0-8], [104-112], 6, 8
+//WalkLeft
+f: [9-17], [117-125], 6, 17
+//WalkDown
+f: [18-26], [130-138], 6, 26
+//WalkRight
+f: [27-35], [143-151], 6, 35
+
+//============================Attacking
+
+//AttkUp
+f: [36-41], [157-162], 5, 36
+//AttkLeft
+f: [42-47], [170-175], 5, 42
+//AttkDown
+f: [48-53], [183-188], 5, 48
+//AttkRight
+f: [54-59], [196-201], 5, 54
+
+ //===========================Identifiers
+
+i:WalkUp, 0
+i:WalkLeft, 9
+i:WalkDown, 18
+i:WalkRight, 27
+
+//v: identifier, change in x velocity, change in y velocity 
+//WalkUp
+v: [0-8], 0, 1
+
+//WalkLeft
+v: [9-17], -1, 0
+
+//WalkDown
+v: [18-26], 0, -1
+
+//WalkRight
+v: [27-35], 1, 0
+
+
+
+i:AttkUp,
+i:AttkLeft,
+i:AttkDown,
+i:AttkRight,
