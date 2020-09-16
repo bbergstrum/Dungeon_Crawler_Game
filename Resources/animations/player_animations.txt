@@ -1,57 +1,58 @@
-SplashKit Animation
+SplashKit Animation 
 
-//Multi-frame: ranges are in[]
-//[a-b] = numbers from a to b inclusive
-//[a,b,c] = explicit values
-//[a-b,c] = combination
+// Multi-frame: ranges are in[]
+// [a-b] = numbers from a to b inclusive
+// [a,b,c] = explicit values
+// [a-b,c] = combination
 
-//NEW
+// frame: frame num(s), cell id(s), duration, next frame
+
+//============================Idle
+
+// IdleUp
+f: [0, 1], [104, 156], 1, 0
+// IdleLeft
+f: [2, 3], [117, 169], 1, 2
+//IdleDown
+f: [4, 5], [130, 182], 1, 4
+//IdleRight
+f: [6, 7], [143, 195], 1, 6
 
 //============================Walking
 
-//WalkUp
-f: [0-8], [104-112], 6, 8
-//WalkLeft
-f: [9-17], [117-125], 6, 17
-//WalkDown
-f: [18-26], [130-138], 6, 26
-//WalkRight
-f: [27-35], [143-151], 6, 35
+// WalkUp
+f: [8-15], [105-112], 7, 8
+// WalkLeft
+f: [16-23], [118-125], 7, 16
+// WalkDown
+f: [24-31], [131-138], 7, 24
+// WalkRight
+f: [32-39], [144-151], 7, 32
 
 //============================Attacking
 
-//AttkUp
-f: [36-41], [157-162], 5, 36
-//AttkLeft
-f: [42-47], [170-175], 5, 42
-//AttkDown
-f: [48-53], [183-188], 5, 48
-//AttkRight
-f: [54-59], [196-201], 5, 54
+// AttkUp
+f: [40-44], [157-161], 4, 40
+// AttkLeft
+f: [45-49], [170-174], 4, 45
+// AttkDown
+f: [50-54], [183-187], 4, 50
+// AttkRight
+f: [55-59], [196-200], 4, 55
 
- //===========================Identifiers
+//===========================Identifiers
 
-i:WalkUp, 0
-i:WalkLeft, 9
-i:WalkDown, 18
-i:WalkRight, 27
+i:IdleUp, 0
+i:IdleLeft, 2
+i:IdleDown, 4
+i:IdleRight, 6
 
-//v: identifier, change in x velocity, change in y velocity 
-//WalkUp
-v: [0-8], 0, 1
+i:WalkUp, 8
+i:WalkLeft, 16
+i:WalkDown, 24
+i:WalkRight, 32
 
-//WalkLeft
-v: [9-17], -1, 0
-
-//WalkDown
-v: [18-26], 0, -1
-
-//WalkRight
-v: [27-35], 1, 0
-
-
-
-i:AttkUp,
-i:AttkLeft,
-i:AttkDown,
-i:AttkRight,
+i:AttkUp, 40
+i:AttkLeft, 45
+i:AttkDown, 50
+i:AttkRight, 55

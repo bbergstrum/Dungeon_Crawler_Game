@@ -1,0 +1,2 @@
+automapping/grass transitions.tmx
+automapping/wall transitions.tmx

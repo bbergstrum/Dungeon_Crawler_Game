@@ -1,0 +1,6 @@
+//player
+BITMAP, player, player_sprite_sheet.png
+
+// implement eventually:
+// BITMAP, enemy, enemy_sprite_sheet.png
+// BITMAP, level, level.png
