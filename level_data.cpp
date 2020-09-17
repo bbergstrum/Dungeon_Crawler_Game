@@ -1,11 +1,18 @@
 #include "level_data.h"
-#include "game_data.h"
-#include "enemy.h"
-#include "player.h"
 #include "splashkit.h"
 
 level_data new_level()
 {
-    // a large vector of objects for collisions
-    // big bitmap for level.
+    level_data new_level;
+
+    new_level.level_id = 1;
+
+    new_level.level_bitmap = load_bitmap("LevelBmp", "demo_level.png");
+
+    return new_level;
 }
+
+void draw_level(level_data level_to_draw)
+{
+    draw_bitmap(level_to_draw.level_bitmap, 0, 0); // level bitmap should take up entire screen size
+};

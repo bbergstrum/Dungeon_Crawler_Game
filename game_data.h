@@ -3,7 +3,7 @@
 
 #include "player.h"
 // #include "enemy.h"
-// #include "level_data.h"
+#include "level_data.h"
 #include "splashkit.h"
 
 using namespace std;
@@ -11,9 +11,10 @@ using namespace std;
 struct game_data 
 {
     player_data player;
-    // vector<enemy_data> enemies; - add eventually
-    // vector<level_data> levels; add eventually
+
     timer game_timer;
+
+    level_data level;
 };
 
 /**

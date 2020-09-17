@@ -1,7 +1,7 @@
 #include "splashkit.h"
 #include "game_data.h"
-// #include "level_data.h"
 #include "player.h"
+#include "level_data.h"
 // #include "enemy.h"
 
 using namespace std;
@@ -12,6 +12,8 @@ using namespace std;
 game_data new_game()
 {
     game_data game;
+
+    game.level = new_level();
 
     game.player = new_player();
      
@@ -53,6 +55,8 @@ void draw_game(const game_data &game)
 {
     // Redraw everything
     clear_screen(COLOR_BLACK);
+
+    draw_level(game.level);
 
     // redraw the player
     draw_player(game.player);

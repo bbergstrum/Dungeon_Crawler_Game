@@ -19,7 +19,7 @@ void load_resources()
  */
 int main()
 {
-    open_window("Dungeon Crawler", 800, 800);
+    open_window("Dungeon Crawler", 1210, 1210);
     
     load_resources();
 
