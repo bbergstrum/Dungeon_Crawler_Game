@@ -22,6 +22,7 @@ struct player_data
     drawing_options draw_options;
     direction player_direction;
     bool is_moving;
+    string current_animation;
     float x;
     float y;
     int health;

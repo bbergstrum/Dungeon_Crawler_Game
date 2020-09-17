@@ -23,6 +23,7 @@ player_data new_player()
 
     player.player_direction = DOWN;
     player.is_moving = false;
+    sprite_start_animation(player.player_sprite, "IdleDown");
 
     //set position x and y
     int x_coordinate = screen_width() / 2;
@@ -50,6 +51,7 @@ void update_player(player_data &player)
     update_sprite(player.player_sprite);
     update_animation(player.player_animation);
 }
+
 
 void handle_input(player_data &player)
 {
@@ -97,53 +99,77 @@ void handle_input(player_data &player)
     }
 
     // check if the player is moving to assign animations and movement
-    if(player.is_moving)
+    if(player.is_moving && player.current_animation.find("Attk"))
     {   
         // check the direction they are moving in and apply movement
         switch (player.player_direction)
         {
             case UP:
                 sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
-                assign_animation(player.player_animation, "WalkUp");
-                // sprite_start_animation(player.player_sprite, "WalkUp");
+                if(to_lowercase(player.current_animation) != to_lowercase("WalkUp"))
+                {
+                    sprite_start_animation(player.player_sprite, "WalkUp");
+                    player.current_animation = "WalkUp";
+                }
                 break;
             case LEFT:
                 sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
-                assign_animation(player.player_animation, "WalkLeft");
-                // sprite_start_animation(player.player_sprite, "WalkLeft");
+                if(to_lowercase(player.current_animation) != to_lowercase("WalkLeft"))
+                {
+                    sprite_start_animation(player.player_sprite, "WalkLeft");
+                    player.current_animation = "WalkLeft";
+                }
                 break;
             case DOWN:
                 sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
-                assign_animation(player.player_animation, "WalkDown");
-                // sprite_start_animation(player.player_sprite, "WalkDown");
+                if(to_lowercase(player.current_animation) != to_lowercase("WalkDown"))
+                {
+                    sprite_start_animation(player.player_sprite, "WalkDown");
+                    player.current_animation = "WalkDown";
+                }
                 break;
             case RIGHT:
                 sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
-                assign_animation(player.player_animation, "WalkRight");
-                // sprite_start_animation(player.player_sprite, "WalkRight");
+                if(to_lowercase(player.current_animation) != to_lowercase("WalkRight"))
+                {
+                    sprite_start_animation(player.player_sprite, "WalkRight");
+                    player.current_animation = "WalkRight";
+                }
                 break;    
         }
-    } 
+    }  
     else // if the player isn't moving animate idle
     {
         // check the players direction and update the idle animation
         switch (player.player_direction)
         {
             case UP:
-                assign_animation(player.player_animation, "IdleUp");
-                // sprite_start_animation(player.player_sprite, "IdleUp");
+                if(to_lowercase(player.current_animation) != to_lowercase("IdleUp"))
+                {
+                    sprite_start_animation(player.player_sprite, "IdleUp");
+                    player.current_animation = "IdleUp";
+                }
                 break;
             case LEFT:
-                assign_animation(player.player_animation, "IdleLeft");
-                // sprite_start_animation(player.player_sprite, "IdleLeft");
+                if(to_lowercase(player.current_animation) != to_lowercase("IdleLeft"))
+                {
+                    sprite_start_animation(player.player_sprite, "IdleLeft");
+                    player.current_animation = "IdleLeft";
+                }
                 break;
             case DOWN:
-                assign_animation(player.player_animation, "IdleDown");
-                // sprite_start_animation(player.player_sprite, "IdleDown");
+                if(to_lowercase(player.current_animation) != to_lowercase("IdleDown"))
+                {
+                    sprite_start_animation(player.player_sprite, "IdleDown");
+                    player.current_animation = "IdleDown";
+                }
                 break;
             case RIGHT:
-                assign_animation(player.player_animation, "IdleRight");
-                // sprite_start_animation(player.player_sprite, "IdleRight");
+                if(to_lowercase(player.current_animation) != to_lowercase("IdleRight"))
+                {
+                    sprite_start_animation(player.player_sprite, "IdleRight");
+                    player.current_animation = "IdleRight";
+                }
                 break;    
         }
     }
@@ -152,24 +178,41 @@ void handle_input(player_data &player)
     // drawing rectangles for attack collisions?
     if(key_down(SPACE_KEY))
     {
-        switch (player.player_direction)
+        switch (player.player_direction)      
         {
             case UP:
-                assign_animation(player.player_animation, "AttkUp");
-                // sprite_start_animation(player.player_sprite, "AttkUp");
+                if(to_lowercase(player.current_animation) != to_lowercase("AttkUp"))
+                {
+                    sprite_start_animation(player.player_sprite, "AttkUp");
+                    player.current_animation = "AttkUp";
+                }
                 break;
             case LEFT:
-                assign_animation(player.player_animation, "AttkLeft");
-                // sprite_start_animation(player.player_sprite, "AttkLeft");
+                if(to_lowercase(player.current_animation) != to_lowercase("AttkLeft"))
+                {
+                    sprite_start_animation(player.player_sprite, "AttkLeft");
+                    player.current_animation = "AttkLeft";
+                }
                 break;
             case DOWN:
-                assign_animation(player.player_animation, "AttkDown");
-                // sprite_start_animation(player.player_sprite, "AttkDown");
+                if(to_lowercase(player.current_animation) != to_lowercase("AttkDown"))
+                {
+                    sprite_start_animation(player.player_sprite, "AttkDown");
+                    player.current_animation = "AttkDown";
+                    write_line("DICKS");
+                }
                 break;
             case RIGHT:
-                assign_animation(player.player_animation, "AttkRight");
-                // sprite_start_animation(player.player_sprite, "AttkRight");
+                if(to_lowercase(player.current_animation) != to_lowercase("AttkRight"))
+                {
+                    sprite_start_animation(player.player_sprite, "AttkRight");
+                    player.current_animation = "AttkRight";
+                }
                 break;    
         }
     }
+
+    write_line(player.current_animation);
+
+    write_line("Current Animation: " + animation_name(player.player_animation));
 }
