@@ -23,8 +23,6 @@ int main()
     
     load_resources();
 
-    load_resources();
-
     game_data game = new_game();
 
     while (not quit_requested())
