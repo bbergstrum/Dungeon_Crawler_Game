@@ -23,6 +23,7 @@ player_data new_player()
 
     player.player_direction = DOWN;
     player.is_moving = false;
+    player.is_attacking = false;
     sprite_start_animation(player.player_sprite, "IdleDown");
 
     //set position x and y
@@ -59,59 +60,63 @@ void handle_input(player_data &player)
     // point_2d sprite_center = center_point(player.player_sprite);
 
     //when each direction key is pressed, change is_moving and assign a direction 
-    if(key_down(UP_KEY))
+    if(!player.is_attacking)
     {
-        player.is_moving = true;
-        player.player_direction = UP;
-        sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
+        if(key_down(UP_KEY))
+        {
+            player.is_moving = true;
+            player.player_direction = UP;
+            sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
+        }
+        else if(key_down(LEFT_KEY))
+        {
+            player.is_moving = true;
+            player.player_direction = LEFT;
+            sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
+        }
+        else if(key_down(DOWN_KEY))
+        {
+            player.is_moving = true;
+            player.player_direction = DOWN;
+            sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
+        }
+        else if(key_down(RIGHT_KEY))
+        {
+            player.is_moving = true;
+            player.player_direction = RIGHT;
+            sprite_set_dx(player.player_sprite, MOVEMENT_SPEED);
+        }
     }
-    else if(key_down(LEFT_KEY))
-    {
-        player.is_moving = true;
-        player.player_direction = LEFT;
-        sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
-    }
-    else if(key_down(DOWN_KEY))
-    {
-        player.is_moving = true;
-        player.player_direction = DOWN;
-        sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
-    }
-    else if(key_down(RIGHT_KEY))
-    {
-        player.is_moving = true;
-        player.player_direction = RIGHT;
-        sprite_set_dx(player.player_sprite, MOVEMENT_SPEED);
-    }
+
 
     // when the user releases the movement keys set is_moving to false again
     if (key_released(UP_KEY))
     {
         player.is_moving = false;
+        sprite_set_dx(player.player_sprite, 0);
         sprite_set_dy(player.player_sprite, 0);
     }
     else if (key_released(LEFT_KEY))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
+        sprite_set_dy(player.player_sprite, 0);
     }
     else if (key_released(DOWN_KEY))
     {
         player.is_moving = false;
+        sprite_set_dx(player.player_sprite, 0);
         sprite_set_dy(player.player_sprite, 0);
     }
     else if (key_released(RIGHT_KEY))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
+        sprite_set_dy(player.player_sprite, 0);
     }
-
-    size_t is_attacking = player.current_animation.find("Attk");
-    write_line((int)is_attacking);
-    write_line(is_attacking != string::npos);
-    write_line(player.current_animation);
+    
     // check if the player is moving to assign animations and movement
-    if(player.is_moving && is_attacking != string::npos) // npos maximum possible length of string
+    if(!player.is_attacking && player.is_moving) // npos maximum possible length of string
     {   
         // check the direction they are moving in and apply movement
         switch (player.player_direction)
@@ -146,7 +151,8 @@ void handle_input(player_data &player)
                 break;    
         }
     }  
-    else // if the player isn't moving animate idle
+    
+    if(!player.is_attacking && !player.is_moving)  // if the player isn't moving animate idle
     {
         // check the players direction and update the idle animation
         switch (player.player_direction)
@@ -193,6 +199,7 @@ void handle_input(player_data &player)
                 {
                     sprite_start_animation(player.player_sprite, "AttkUp");
                     player.current_animation = "AttkUp";
+                    player.is_attacking = true;
                 }
                 break;
             case LEFT:
@@ -200,6 +207,7 @@ void handle_input(player_data &player)
                 {
                     sprite_start_animation(player.player_sprite, "AttkLeft");
                     player.current_animation = "AttkLeft";
+                    player.is_attacking = true;
                 }
                 break;
             case DOWN:
@@ -207,6 +215,7 @@ void handle_input(player_data &player)
                 {
                     sprite_start_animation(player.player_sprite, "AttkDown");
                     player.current_animation = "AttkDown";
+                    player.is_attacking = true;
                 }
                 break;
             case RIGHT:
@@ -214,9 +223,14 @@ void handle_input(player_data &player)
                 {
                     sprite_start_animation(player.player_sprite, "AttkRight");
                     player.current_animation = "AttkRight";
+                    player.is_attacking = true;
                 }
                 break;    
         }
+    }
+    else
+    {
+        player.is_attacking = false;
     }
 
     // write_line(player.current_animation);
