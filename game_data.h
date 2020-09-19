@@ -6,6 +6,8 @@
 #include "level_data.h"
 #include "splashkit.h"
 
+#define DEBUG_MODE true
+
 using namespace std;
 
 struct game_data 

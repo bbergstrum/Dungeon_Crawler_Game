@@ -6,9 +6,6 @@
 
 using namespace std;
 
-#define WINDOW_HEIGHT 800
-#define WINDOW_WIDTH 800
-
 game_data new_game()
 {
     game_data game;
@@ -28,18 +25,36 @@ game_data new_game()
 //============================================================================================================
 
 // check sprite collisions - should look something like this eventually
-// void check_collisions(vector<enemy_data> enemies, player_data &player)
-// {
-        // create a collisoin vector of all active objects 
-        // rectangle r = rectangle_from(50, 50, 50, 50);
-
-        // sprite_rectangle_collision(player.player_sprite, r);
-
-        // sprite_collision_circle - maybe, circle collisions are taxing
-        
-        // add a rectangle for attacking collisions 
-
-// }
+void check_collisions(vector<object_data> &objects, player_data &player)
+{
+    // create a collisoin vector of all active objects 
+    for(int i = 0; i < objects.size(); i++)
+    {
+        if( sprite_rectangle_collision(player.player_sprite, objects[i].object_rectangle) )
+        {
+            // reverse movement.
+            switch(player.player_direction)
+            {
+                case UP:
+                    sprite_set_dy(player.player_sprite, 0);
+                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 3));
+                    break;
+                case LEFT:
+                    sprite_set_dx(player.player_sprite, 0);
+                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 3));
+                    break;
+                case DOWN:
+                    sprite_set_dy(player.player_sprite, 0);
+                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 3));
+                    break;
+                case RIGHT:
+                    sprite_set_dx(player.player_sprite, 0);
+                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 3));
+                    break;
+            }
+        }
+    }
+}
 
 void update_game(game_data &game)
 {
@@ -48,7 +63,8 @@ void update_game(game_data &game)
 
     // update enemies 
 
-    // check collisions between sprites and rectangles
+    // check collisions between sprites and objects
+    check_collisions(game.level.objects, game.player);
 }
 
 void draw_game(const game_data &game)

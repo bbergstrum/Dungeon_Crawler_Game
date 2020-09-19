@@ -6,6 +6,9 @@
 
 using namespace std;
 
+#define MOVEMENT_SPEED 2
+
+
 enum direction
 {
     UP,

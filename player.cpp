@@ -26,12 +26,12 @@ player_data new_player()
     sprite_start_animation(player.player_sprite, "IdleDown");
 
     //set position x and y
-    int x_coordinate = screen_width() / 2;
-    int y_coordinate = screen_height() / 2;
+    sprite_set_dx(player.player_sprite, 0);
+    sprite_set_dy(player.player_sprite, 0);    
 
     // Position in the centre of the initial screen
-    sprite_set_x(player.player_sprite, x_coordinate);
-    sprite_set_y(player.player_sprite, y_coordinate);
+    sprite_set_x(player.player_sprite, 600);
+    sprite_set_y(player.player_sprite, 650);
 
     // store the sprite x & y location
     player.x = sprite_x(player.player_sprite);
@@ -63,49 +63,60 @@ void handle_input(player_data &player)
     {
         player.is_moving = true;
         player.player_direction = UP;
+        sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
     }
     else if(key_down(LEFT_KEY))
     {
         player.is_moving = true;
         player.player_direction = LEFT;
+        sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
     }
     else if(key_down(DOWN_KEY))
     {
         player.is_moving = true;
         player.player_direction = DOWN;
+        sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
     }
     else if(key_down(RIGHT_KEY))
     {
         player.is_moving = true;
         player.player_direction = RIGHT;
+        sprite_set_dx(player.player_sprite, MOVEMENT_SPEED);
     }
 
     // when the user releases the movement keys set is_moving to false again
     if (key_released(UP_KEY))
     {
         player.is_moving = false;
+        sprite_set_dy(player.player_sprite, 0);
     }
     else if (key_released(LEFT_KEY))
     {
         player.is_moving = false;
+        sprite_set_dx(player.player_sprite, 0);
     }
     else if (key_released(DOWN_KEY))
     {
         player.is_moving = false;
+        sprite_set_dy(player.player_sprite, 0);
     }
     else if (key_released(RIGHT_KEY))
     {
         player.is_moving = false;
+        sprite_set_dx(player.player_sprite, 0);
     }
 
+    size_t is_attacking = player.current_animation.find("Attk");
+    write_line((int)is_attacking);
+    write_line(is_attacking != string::npos);
+    write_line(player.current_animation);
     // check if the player is moving to assign animations and movement
-    if(player.is_moving && player.current_animation.find("Attk"))
+    if(player.is_moving && is_attacking != string::npos) // npos maximum possible length of string
     {   
         // check the direction they are moving in and apply movement
         switch (player.player_direction)
         {
             case UP:
-                sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
                 if(to_lowercase(player.current_animation) != to_lowercase("WalkUp"))
                 {
                     sprite_start_animation(player.player_sprite, "WalkUp");
@@ -113,7 +124,6 @@ void handle_input(player_data &player)
                 }
                 break;
             case LEFT:
-                sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
                 if(to_lowercase(player.current_animation) != to_lowercase("WalkLeft"))
                 {
                     sprite_start_animation(player.player_sprite, "WalkLeft");
@@ -121,7 +131,6 @@ void handle_input(player_data &player)
                 }
                 break;
             case DOWN:
-                sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
                 if(to_lowercase(player.current_animation) != to_lowercase("WalkDown"))
                 {
                     sprite_start_animation(player.player_sprite, "WalkDown");
@@ -129,7 +138,6 @@ void handle_input(player_data &player)
                 }
                 break;
             case RIGHT:
-                sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
                 if(to_lowercase(player.current_animation) != to_lowercase("WalkRight"))
                 {
                     sprite_start_animation(player.player_sprite, "WalkRight");
@@ -199,7 +207,6 @@ void handle_input(player_data &player)
                 {
                     sprite_start_animation(player.player_sprite, "AttkDown");
                     player.current_animation = "AttkDown";
-                    write_line("DICKS");
                 }
                 break;
             case RIGHT:
@@ -212,7 +219,9 @@ void handle_input(player_data &player)
         }
     }
 
-    write_line(player.current_animation);
+    // write_line(player.current_animation);
 
-    write_line("Current Animation: " + animation_name(player.player_animation));
+    // write_line("Current Animation: " + animation_name(player.player_animation));
+
+    // write_line(to_lowercase(player.current_animation) ==  to_lowercase("AttkDown"));
 }

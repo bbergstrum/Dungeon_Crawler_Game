@@ -5,12 +5,30 @@
 
 using namespace std;
 
+// enumeration for dynamic level loading
+enum level_type
+{
+    START,
+    DUNGEON_ONE,
+    DUNGEON_TWO,
+    DUNGEON_THREE,
+    DEMO
+};
+
+struct object_data
+{
+    rectangle object_rectangle;
+    string name;
+};
+
 // structured something like this eventually
 struct level_data
 {
-    double level_id;
-
+    level_type type;
+    
     bitmap level_bitmap;
+
+    vector<object_data> objects;
 };
 
 /**
