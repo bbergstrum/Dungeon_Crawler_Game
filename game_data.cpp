@@ -2,6 +2,8 @@
 #include "game_data.h"
 #include "player.h"
 #include "level_data.h"
+#include "level_designs.h"
+
 // #include "enemy.h"
 
 using namespace std;
@@ -10,7 +12,7 @@ game_data new_game()
 {
     game_data game;
 
-    game.level = new_level();
+    game.level = load_level(DEMO);
 
     game.player = new_player();
      
@@ -37,19 +39,19 @@ void check_collisions(vector<object_data> &objects, player_data &player)
             {
                 case UP:
                     sprite_set_dy(player.player_sprite, 0);
-                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 3));
+                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
                     break;
                 case LEFT:
                     sprite_set_dx(player.player_sprite, 0);
-                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 3));
+                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
                     break;
                 case DOWN:
                     sprite_set_dy(player.player_sprite, 0);
-                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 3));
+                    sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
                     break;
                 case RIGHT:
                     sprite_set_dx(player.player_sprite, 0);
-                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 3));
+                    sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
                     break;
             }
         }

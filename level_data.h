@@ -2,30 +2,15 @@
 #define DUNGEON_CRAWLER_LEVEL_DATA
 
 #include "splashkit.h"
+#include "level_designs.h"
 
 using namespace std;
-
-// enumeration for dynamic level loading
-enum level_type
-{
-    START,
-    DUNGEON_ONE,
-    DUNGEON_TWO,
-    DUNGEON_THREE,
-    DEMO
-};
-
-struct object_data
-{
-    rectangle object_rectangle;
-    string name;
-};
 
 // structured something like this eventually
 struct level_data
 {
     level_type type;
-    
+
     bitmap level_bitmap;
 
     vector<object_data> objects;
@@ -36,7 +21,7 @@ struct level_data
  * 
  * @returns     The new level data
  */
-level_data new_level();
+level_data load_level(level_type level_type);
 
 /**
 * Draws the level to the screen. 
