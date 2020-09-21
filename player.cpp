@@ -31,8 +31,8 @@ player_data new_player()
     sprite_set_dy(player.player_sprite, 0);    
 
     // Position in the centre of the initial screen
-    sprite_set_x(player.player_sprite, 600);
-    sprite_set_y(player.player_sprite, 650);
+    sprite_set_x(player.player_sprite, 1080);
+    sprite_set_y(player.player_sprite, 285);
 
     // store the sprite x & y location
     player.x = sprite_x(player.player_sprite);

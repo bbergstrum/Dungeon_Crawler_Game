@@ -4,25 +4,46 @@
 
 void draw_objects(const vector<object_data> objects)
 {
-    for(int i = 0; i > objects.size(); i++)           // iterate over all objects in level_data object array
-        {   
-            // draw each rectangle in array 
-            draw_rectangle(COLOR_BLUE, objects[i].object_rectangle); 
-        }
+    // for(int i = 0; i > objects.size(); i++)           // iterate over all objects in level_data object array
+    //     {   
+    //         // draw each rectangle in array 
+    //         draw_rectangle(COLOR_BLUE, objects[i].object_rectangle); 
+    //     }
 
-    // draw_rectangle(COLOR_BLUE, min_x, min_y, level_width, top_boundary_wall_height);
-    // draw_rectangle(COLOR_BLUE, min_x, min_y, side_boundary_wall_width, level_height);
-    // draw_rectangle(COLOR_BLUE, min_x, boundary_y, level_width, side_boundary_wall_width);
-    // draw_rectangle(COLOR_BLUE, boundary_x, min_y, side_boundary_wall_width, level_height);
-    // draw_rectangle(COLOR_BLUE, min_x, stairs_wall_y, stairs_left_wall_width, stairs_wall_height);
-    // draw_rectangle(COLOR_BLUE, west_stairs_right_wall_x, stairs_wall_y, stairs_right_wall_width, stairs_wall_height);
-    // draw_rectangle(COLOR_BLUE, center_wall_x, center_wall_y, center_wall_width, center_wall_height);
-    // draw_rectangle(COLOR_BLUE, east_stairs_left_wall_x, stairs_wall_y, stairs_right_wall_width, stairs_wall_height);
-    // draw_rectangle(COLOR_BLUE, east_stairs_right_wall_x, stairs_wall_y, stairs_left_wall_width, stairs_wall_height);
-    // draw_rectangle(COLOR_BLUE, west_torch_lg_x, torch_lg_y, torch_lg_width, torch_lg_height);
-    // draw_rectangle(COLOR_BLUE, west_torch_sml_x, torch_sml_y, torch_sml_width, torch_sml_height);
-    // draw_rectangle(COLOR_BLUE, east_torch_lg_x, torch_lg_y, torch_lg_width, torch_lg_height);
-    // draw_rectangle(COLOR_BLUE, east_torch_sml_x, torch_sml_y, torch_sml_width, torch_sml_height);
+    draw_rectangle(COLOR_BLUE, objects[0].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[1].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[2].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[3].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[4].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[5].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[6].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[7].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[8].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[9].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[10].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[11].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[12].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[13].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[14].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[15].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[16].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[17].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[18].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[19].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[20].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[21].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[22].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[23].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[24].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[25].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[26].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[27].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[28].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[29].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[30].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[31].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[32].object_rectangle);
+    draw_rectangle(COLOR_BLUE, objects[33].object_rectangle);
 };
 
 level_data load_level(level_type level_type)
