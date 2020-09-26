@@ -31,7 +31,7 @@
 // #endif
 
 
-//reducing distance between player and npc 
+// reducing distance between player and npc 
 
 // enemies have their own x and y - calling sprite_x() sprite_y()
 // check player x and y

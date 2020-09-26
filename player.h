@@ -8,7 +8,6 @@ using namespace std;
 
 #define MOVEMENT_SPEED 2
 
-
 enum direction
 {
     UP,
@@ -17,8 +16,25 @@ enum direction
     RIGHT
 };
 
+enum player_number
+{
+    ONE,
+    TWO
+};
+
+struct player_key_map
+{
+    key_code up;
+    key_code left;
+    key_code down;
+    key_code right;
+    key_code attack;
+};
+
 struct player_data
 {
+    player_number player_number;
+    player_key_map player_key_map;
     sprite player_sprite;
     animation_script animation_script;
     animation player_animation;
@@ -41,7 +57,7 @@ struct player_data
  * 
  * @returns     The new player data
  */
-player_data new_player();
+player_data new_player(player_number player_number);
 
 /**
 * Draws the player to the screen. 

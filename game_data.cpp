@@ -14,7 +14,8 @@ game_data new_game()
 
     game.level = load_level(DEMO);
 
-    game.player = new_player();
+    game.player_one = new_player(ONE);
+    game.player_two = new_player(TWO);
      
     //timer
     game.game_timer = create_timer("game_time");
@@ -84,12 +85,14 @@ void check_collisions(vector<object_data> &objects, player_data &player)
 void update_game(game_data &game)
 {
     // update player movement
-    update_player(game.player);
+    update_player(game.player_one);
+    update_player(game.player_two);
 
     // update enemies 
 
     // check collisions between sprites and objects
-    check_collisions(game.level.objects, game.player);
+    check_collisions(game.level.objects, game.player_one);
+    check_collisions(game.level.objects, game.player_two);
 }
 
 void draw_game(const game_data &game)
@@ -100,9 +103,8 @@ void draw_game(const game_data &game)
     draw_level(game.level);
 
     // redraw the player
-    draw_player(game.player);
-
-    // redraw enemies
+    draw_player(game.player_one);
+    draw_player(game.player_two);
 
     // refresh the screen
     refresh_screen(60);

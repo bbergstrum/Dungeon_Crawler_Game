@@ -4,9 +4,28 @@
 
 using namespace std;
 
-player_data new_player()
+player_data new_player(player_number player_number)
 {
     player_data player;
+
+    player.player_number = player_number;
+
+    if(player.player_number == ONE)
+    {
+        player.player_key_map.up = UP_KEY;
+        player.player_key_map.left = LEFT_KEY;
+        player.player_key_map.down = DOWN_KEY;
+        player.player_key_map.right = RIGHT_KEY;
+        player.player_key_map.attack = RIGHT_CTRL_KEY;
+    }
+    else
+    {
+        player.player_key_map.up = W_KEY;
+        player.player_key_map.left = A_KEY;
+        player.player_key_map.down = S_KEY;
+        player.player_key_map.right = D_KEY;
+        player.player_key_map.attack = SPACE_KEY;
+    }
 
     //load player bitmap and define cell details
     bitmap default_bitmap = load_bitmap("PlayerBmp", "player_sprite_sheet.png");
@@ -66,34 +85,30 @@ void update_player(player_data &player)
     player.atk_hit_box_right = rectangle_from((center_point(player.player_sprite).x + 48), center_point(player.player_sprite).y, 32, 32);
 }
 
-
 void handle_input(player_data &player)
 {
-    // // Get the center of the player - use later for drawing collison rectangles
-    // point_2d sprite_center = center_point(player.player_sprite);
-
     //when each direction key is pressed, change is_moving and assign a direction 
     if(!player.is_attacking)
     {
-        if(key_down(UP_KEY))
+        if(key_down(player.player_key_map.up))
         {
             player.is_moving = true;
             player.player_direction = UP;
             sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
         }
-        else if(key_down(LEFT_KEY))
+        else if(key_down(player.player_key_map.left))
         {
             player.is_moving = true;
             player.player_direction = LEFT;
             sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
         }
-        else if(key_down(DOWN_KEY))
+        else if(key_down(player.player_key_map.down))
         {
             player.is_moving = true;
             player.player_direction = DOWN;
             sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
         }
-        else if(key_down(RIGHT_KEY))
+        else if(key_down(player.player_key_map.right))
         {
             player.is_moving = true;
             player.player_direction = RIGHT;
@@ -103,25 +118,25 @@ void handle_input(player_data &player)
 
 
     // when the user releases the movement keys set is_moving to false again
-    if (key_released(UP_KEY))
+    if (key_released(player.player_key_map.up))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
         sprite_set_dy(player.player_sprite, 0);
     }
-    else if (key_released(LEFT_KEY))
+    else if (key_released(player.player_key_map.left))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
         sprite_set_dy(player.player_sprite, 0);
     }
-    else if (key_released(DOWN_KEY))
+    else if (key_released(player.player_key_map.down))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
         sprite_set_dy(player.player_sprite, 0);
     }
-    else if (key_released(RIGHT_KEY))
+    else if (key_released(player.player_key_map.right))
     {
         player.is_moving = false;
         sprite_set_dx(player.player_sprite, 0);
@@ -203,7 +218,7 @@ void handle_input(player_data &player)
    
     // when the player attacks, check the direction, animate the attack in that direction
     // drawing rectangles for attack collisions?
-    if(key_down(SPACE_KEY))
+    if(key_down(player.player_key_map.attack))
     {
         switch (player.player_direction)      
         {
@@ -249,10 +264,4 @@ void handle_input(player_data &player)
     {
         player.is_attacking = false;
     }
-
-    // write_line(player.current_animation);
-
-    // write_line("Current Animation: " + animation_name(player.player_animation));
-
-    // write_line(to_lowercase(player.current_animation) ==  to_lowercase("AttkDown"));
 }

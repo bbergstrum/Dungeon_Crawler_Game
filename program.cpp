@@ -30,7 +30,8 @@ int main()
         // Handle input to adjust player movement
         process_events();
 
-        handle_input(game.player);
+        handle_input(game.player_one);
+        handle_input(game.player_two);
 
         update_game(game);
 

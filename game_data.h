@@ -12,7 +12,8 @@ using namespace std;
 
 struct game_data 
 {
-    player_data player;
+    player_data player_one;
+    player_data player_two;
 
     timer game_timer;
 
