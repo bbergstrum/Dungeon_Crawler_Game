@@ -25,6 +25,29 @@ game_data new_game()
 }
 
 //============================================================================================================
+void hit_collision(const player_data &player)
+{
+    // call rectangle collision on rectangle
+    switch(player.player_direction)
+    {
+        case UP:
+            // sprite_rectangle_collision();
+            write_line("Attack UP");
+            break;
+        case LEFT:
+            // sprite_rectangle_collision();
+            write_line("Attack LEFT");
+            break;
+        case DOWN:
+            // sprite_rectangle_collision();
+            write_line("Attack DOWN");
+            break;
+        case RIGHT:
+            // sprite_rectangle_collision();
+            write_line("Attack RIGHT");
+            break;
+    }
+};
 
 // check sprite collisions - should look something like this eventually
 void check_collisions(vector<object_data> &objects, player_data &player)

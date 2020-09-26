@@ -20,6 +20,13 @@ struct game_data
 };
 
 /**
+ * Checks if a players attack hits another sprite
+ * 
+ * @param player the player performing the attack
+ */
+void hit_collision(const player_data &player);
+
+/**
  * Creates a new game with game data.
  * 
  * @returns     The new game to play

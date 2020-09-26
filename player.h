@@ -27,8 +27,11 @@ struct player_data
     bool is_moving;
     bool is_attacking;
     string current_animation;
-    float x;
-    float y;
+    rectangle player_hit_box;
+    rectangle atk_hit_box_up;
+    rectangle atk_hit_box_left;
+    rectangle atk_hit_box_down;
+    rectangle atk_hit_box_right;
     int health;
     int attack_power;
 };

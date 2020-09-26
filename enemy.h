@@ -29,3 +29,15 @@
 // void draw_enemies(const vector<enemy_data> &enemies_to_draw);
 
 // #endif
+
+
+//reducing distance between player and npc 
+
+// enemies have their own x and y - calling sprite_x() sprite_y()
+// check player x and y
+
+// how to check / implement sight or distance checking
+
+// attacking within a particular distance threshold
+
+// randomly wandering around 

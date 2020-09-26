@@ -363,18 +363,46 @@ vector<object_data> demo_level_objects =
 // ====================================== STARTER LEVEL ==========================================
 
 // ====================================== STARTER LEVEL END ======================================
+bitmap load_level(bitmap level_bitmap, level_type level_type)
+{
+    switch (level_type)
+    {
+    case START:
+        // level_bitmap = load_bitmap("LevelBmp", "start_level.png");
+        break;
+    case DUNGEON_ONE:
+        // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_one.png");
+        break;
+    case DUNGEON_TWO:
+        // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_two.png");   
+        break;
+    case DUNGEON_THREE:
+        // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_three.png");
+        break;
+    case DEMO:
+        level_bitmap = load_bitmap("LevelBmp", "demo_level.png");
+        break;
+    }
+
+    return level_bitmap;
+}
+
 
 vector<object_data> load_objects(vector<object_data> &level_objects, level_type level_type)
 {
     switch (level_type)
     {
     case START:
+        // level_objects = start_level_objects;
         break;
     case DUNGEON_ONE:
+        // level_objects = dungeon_level_one_objects;
         break;
     case DUNGEON_TWO:
+        // level_objects = dungeon_level_two_objects;
         break;
     case DUNGEON_THREE:
+        // level_objects = dungeon_level_three_objects;
         break;
     case DEMO:
         level_objects = demo_level_objects;

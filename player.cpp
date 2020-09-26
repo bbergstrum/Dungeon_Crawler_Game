@@ -1,4 +1,5 @@
 #include "player.h"
+#include "game_data.h"
 #include "splashkit.h"
 
 using namespace std;
@@ -34,16 +35,21 @@ player_data new_player()
     sprite_set_x(player.player_sprite, 1080);
     sprite_set_y(player.player_sprite, 285);
 
-    // store the sprite x & y location
-    player.x = sprite_x(player.player_sprite);
-    player.y = sprite_y(player.player_sprite);
-
     return player;
 }
 
 void draw_player(const player_data &player_to_draw)
 {
     draw_sprite(player_to_draw.player_sprite);
+
+    if(DEBUG_MODE)
+    {
+        draw_rectangle(COLOR_GREEN, player_to_draw.player_hit_box);
+        draw_rectangle(COLOR_RED, player_to_draw.atk_hit_box_up);
+        draw_rectangle(COLOR_RED, player_to_draw.atk_hit_box_left);
+        draw_rectangle(COLOR_RED, player_to_draw.atk_hit_box_down);
+        draw_rectangle(COLOR_RED, player_to_draw.atk_hit_box_right);
+    };
 }
 
 void update_player(player_data &player)
@@ -51,6 +57,13 @@ void update_player(player_data &player)
     // Apply movement based on rotation and velocity in the sprite
     update_sprite(player.player_sprite);
     update_animation(player.player_animation);
+
+    // update the player hit boxes as the player moves around
+    player.player_hit_box = rectangle_from((sprite_x(player.player_sprite) + 8), (sprite_y(player.player_sprite) + 8), 48, 64);
+    player.atk_hit_box_up = rectangle_from((center_point(player.player_sprite).x - 16), (center_point(player.player_sprite).y - 64), 32, 32);
+    player.atk_hit_box_left = rectangle_from((center_point(player.player_sprite).x - 80), center_point(player.player_sprite).y, 32, 32);
+    player.atk_hit_box_down = rectangle_from((center_point(player.player_sprite).x - 16), (center_point(player.player_sprite).y + 64), 32, 32);
+    player.atk_hit_box_right = rectangle_from((center_point(player.player_sprite).x + 48), center_point(player.player_sprite).y, 32, 32);
 }
 
 
@@ -200,6 +213,7 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkUp");
                     player.current_animation = "AttkUp";
                     player.is_attacking = true;
+                    hit_collision(player);
                 }
                 break;
             case LEFT:
@@ -208,6 +222,7 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkLeft");
                     player.current_animation = "AttkLeft";
                     player.is_attacking = true;
+                    hit_collision(player);
                 }
                 break;
             case DOWN:
@@ -216,6 +231,7 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkDown");
                     player.current_animation = "AttkDown";
                     player.is_attacking = true;
+                    hit_collision(player);
                 }
                 break;
             case RIGHT:
@@ -224,6 +240,7 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkRight");
                     player.current_animation = "AttkRight";
                     player.is_attacking = true;
+                    hit_collision(player);
                 }
                 break;    
         }
