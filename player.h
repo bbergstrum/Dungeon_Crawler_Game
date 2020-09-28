@@ -18,7 +18,7 @@ enum direction
 
 enum player_number
 {
-    ONE,
+    ONE = 1,
     TWO
 };
 
@@ -48,8 +48,7 @@ struct player_data
     rectangle atk_hit_box_left;
     rectangle atk_hit_box_down;
     rectangle atk_hit_box_right;
-    int health;
-    int attack_power;
+    vector<bitmap> hearts;
 };
 
 /**
@@ -62,9 +61,10 @@ player_data new_player(player_number player_number);
 /**
 * Draws the player to the screen. 
 * 
-* @param player_to_draw    The player to draw to the screen
+* @param player_to_draw     The player to draw to the screen
+* @param debug_mode         if debug mode enabled or not
 */
-void draw_player(const player_data &player_to_draw);
+void draw_player(const player_data &player_to_draw, bool &debug_mode);
 
 /**
  * Actions a step update of the player - moving them and adjusting the camera.
@@ -76,8 +76,9 @@ void update_player(player_data &player);
 /**
  * Read user input and update the player based on this interaction.
  * 
- * @param player    The player to update
+ * @param player        The player to update
+ * @param debug_mode    Switch debug mode on or off
  */
-void handle_input(player_data &player);
+void handle_input(player_data &player, bool &debug_mode);
 
 #endif 

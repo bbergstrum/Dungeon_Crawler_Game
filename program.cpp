@@ -19,7 +19,7 @@ void load_resources()
  */
 int main()
 {
-    open_window("Dungeon Crawler", 1200, 1200);
+    open_window("Dungeon Crawler", 1200, 1392);
     
     load_resources();
 
@@ -30,8 +30,8 @@ int main()
         // Handle input to adjust player movement
         process_events();
 
-        handle_input(game.player_one);
-        handle_input(game.player_two);
+        handle_input(game.player_one, game.debug_mode);
+        handle_input(game.player_two, game.debug_mode);
 
         update_game(game);
 

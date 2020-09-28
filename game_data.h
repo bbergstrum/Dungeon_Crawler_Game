@@ -6,7 +6,6 @@
 #include "level_data.h"
 #include "splashkit.h"
 
-#define DEBUG_MODE true
 
 using namespace std;
 
@@ -17,16 +16,19 @@ struct game_data
 
     timer game_timer;
 
+    bool debug_mode;
+
     level_data level;
 };
 
 /**
  * Checks if a players attack hits another sprite
  * 
- * @param player the player performing the attack
+ * @param attacking_player the player performing the attack
+ * @param defending_player the player defending the attack
  */
-void hit_collision(const player_data &player);
-
+void hit_collision(player_data &attacking_player, player_data &defending_player);
+   
 /**
  * Creates a new game with game data.
  * 
@@ -46,6 +48,6 @@ void update_game(game_data &game_to_update);
  * 
  * @param game_to_draw    The game to draw to the screen 
  */
-void draw_game(const game_data &game_to_draw);
+void draw_game(game_data &game_to_draw);
 
 #endif

@@ -380,10 +380,10 @@ bitmap load_level(bitmap level_bitmap, level_type level_type)
         // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_three.png");
         break;
     case DEMO:
-        level_bitmap = load_bitmap("LevelBmp", "demo_level.png");
+        level_bitmap = load_bitmap("LevelBmp", "demo_level_with_hud.png");
         break;
     }
-
+    
     return level_bitmap;
 }
 

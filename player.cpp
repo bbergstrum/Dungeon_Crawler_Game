@@ -4,12 +4,30 @@
 
 using namespace std;
 
-player_data new_player(player_number player_number)
+player_data load_sprite_data(player_data &player)
 {
-    player_data player;
+    //load player bitmap and define cell details
+    bitmap default_bitmap = load_bitmap("PlayerBmp", "player_sprite_sheet.png");
+    bitmap_set_cell_details(default_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
 
-    player.player_number = player_number;
+    //load animations
+    player.animation_script = load_animation_script("player_animation_script", "player_animations.txt");
+    player.player_animation = create_animation(player.animation_script, "IdleDown");
+    
+    //load the player sprite sheet
+    player.player_sprite = create_sprite("player", default_bitmap, player.animation_script);
 
+    //load drawing options
+    player.draw_options = option_with_animation(player.player_animation);
+
+    sprite_start_animation(player.player_sprite, "IdleDown");
+
+    return player;
+}
+
+player_data load_key_maps(player_data &player)
+{
+    // set different keybinds for player one and player two
     if(player.player_number == ONE)
     {
         player.player_key_map.up = UP_KEY;
@@ -27,41 +45,70 @@ player_data new_player(player_number player_number)
         player.player_key_map.attack = SPACE_KEY;
     }
 
-    //load player bitmap and define cell details
-    bitmap default_bitmap = load_bitmap("PlayerBmp", "player_sprite_sheet.png");
-    bitmap_set_cell_details(default_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
+    return player;
+};
 
-    //load animations
-    player.animation_script = load_animation_script("player_animation_script", "player_animations.txt");
-    player.player_animation = create_animation(player.animation_script, "IdleDown");
-    
-    //load the player sprite sheet
-    player.player_sprite = create_sprite("player", default_bitmap, player.animation_script);
-
-    //load drawing options
-    player.draw_options = option_with_animation(player.player_animation);
-
-    player.player_direction = DOWN;
-    player.is_moving = false;
-    player.is_attacking = false;
-    sprite_start_animation(player.player_sprite, "IdleDown");
-
+player_data set_player_position(player_data &player)
+{
     //set position x and y
     sprite_set_dx(player.player_sprite, 0);
     sprite_set_dy(player.player_sprite, 0);    
 
-    // Position in the centre of the initial screen
-    sprite_set_x(player.player_sprite, 1080);
-    sprite_set_y(player.player_sprite, 285);
+    // position the players on either end of the level
+    if(player.player_number == ONE)
+    {
+        sprite_set_x(player.player_sprite, 190);
+        sprite_set_y(player.player_sprite, 285);
+    }
+    else 
+    {
+        sprite_set_x(player.player_sprite, 960);
+        sprite_set_y(player.player_sprite, 285);
+    }
 
     return player;
 }
 
-void draw_player(const player_data &player_to_draw)
+player_data new_player(player_number player_number)
+{
+    // initialize the player
+    player_data player;
+
+    // assign a player number
+    player.player_number = player_number;
+
+    // load input keybindings
+    load_key_maps(player);
+
+    // load sprite related data
+    load_sprite_data(player);
+
+    // set the spawning position of the palyer
+    set_player_position(player);
+
+    // set player states
+    player.player_direction = DOWN;
+    player.is_moving = false;
+    player.is_attacking = false;
+
+    // set player health
+    for(int i = 0; i < 4; i++)
+    {
+        // concat string for bitmap name using player number and index
+        string player_heart_name = "player_" + std::to_string(player.player_number) + "_heart_" + std::to_string(i + 1);
+        // bitmap file
+        player.hearts.push_back(load_bitmap(player_heart_name, "heart_small.png"));
+    }
+
+    return player;
+}
+
+void draw_player(const player_data &player_to_draw, bool &debug_mode)
 {
     draw_sprite(player_to_draw.player_sprite);
 
-    if(DEBUG_MODE)
+    // draw visible hitboxes if debug mode enabled
+    if(debug_mode)
     {
         draw_rectangle(COLOR_GREEN, player_to_draw.player_hit_box);
         draw_rectangle(COLOR_RED, player_to_draw.atk_hit_box_up);
@@ -85,7 +132,7 @@ void update_player(player_data &player)
     player.atk_hit_box_right = rectangle_from((center_point(player.player_sprite).x + 48), center_point(player.player_sprite).y, 32, 32);
 }
 
-void handle_input(player_data &player)
+void handle_input(player_data &player, bool &debug_mode)
 {
     //when each direction key is pressed, change is_moving and assign a direction 
     if(!player.is_attacking)
@@ -228,7 +275,6 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkUp");
                     player.current_animation = "AttkUp";
                     player.is_attacking = true;
-                    hit_collision(player);
                 }
                 break;
             case LEFT:
@@ -237,7 +283,6 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkLeft");
                     player.current_animation = "AttkLeft";
                     player.is_attacking = true;
-                    hit_collision(player);
                 }
                 break;
             case DOWN:
@@ -246,7 +291,6 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkDown");
                     player.current_animation = "AttkDown";
                     player.is_attacking = true;
-                    hit_collision(player);
                 }
                 break;
             case RIGHT:
@@ -255,7 +299,6 @@ void handle_input(player_data &player)
                     sprite_start_animation(player.player_sprite, "AttkRight");
                     player.current_animation = "AttkRight";
                     player.is_attacking = true;
-                    hit_collision(player);
                 }
                 break;    
         }
@@ -264,4 +307,21 @@ void handle_input(player_data &player)
     {
         player.is_attacking = false;
     }
+
+    // if(key_typed(F1_KEY))
+    // {
+    //     if(debug_mode)
+    //     {
+    //         debug_mode = false;
+    //         write_line("DEBUG MODE OFF");
+    //     }
+    //     else
+    //     {
+    //         debug_mode = true;
+    //         write_line("DEBUG MODE ON");
+    //     }
+    // }
+
+    if(key_typed(F1_KEY)) debug_mode = false;
+    if(key_typed(F2_KEY)) debug_mode = true;
 }

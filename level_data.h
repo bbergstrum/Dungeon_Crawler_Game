@@ -26,8 +26,9 @@ level_data load_level(level_type level_type);
 /**
 * Draws the level to the screen. 
 * 
-* @param level_to_draw    The level to draw to the screen
+* @param level_to_draw      The level to draw to the screen
+* @param debug_mode         If debug mode is turned on or off
 */
-void draw_level(level_data level_to_draw);
+void draw_level(const level_data level_to_draw, bool debug_mode);
 
 #endif
