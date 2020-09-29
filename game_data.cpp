@@ -6,6 +6,7 @@
 
 using namespace std;
 
+// create a new game to start 
 game_data new_game()
 {
     // initialize a new game
@@ -26,7 +27,7 @@ game_data new_game()
     return game;
 }
 
-//============================================================================================================
+// check an attacking players attack against a defending player if in range
 void apply_damage(player_data &attacking_player, player_data &defending_player)
 {
     // write to the console the attack hit
@@ -41,6 +42,7 @@ void apply_damage(player_data &attacking_player, player_data &defending_player)
     write_line("Player " + std::to_string(attacking_player.player_number) + " remaining hearts: " + std::to_string(defending_player.hearts.size()));
 }
 
+// confirm that an attacking players attack hit another player
 void hit_collision(player_data &attacking_player, player_data &defending_player)
 {
     // check if the attacking player is making an attack
@@ -87,9 +89,19 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
                 break;
         }
     }
+
+    //check if an attack hit kills the defending player
+    if(defending_player.hearts.size() ==0)
+    {
+        if(defending_player.current_animation != defending_player.player_animations.death)
+        {
+            defending_player.current_animation = defending_player.player_animations.death;
+            sprite_start_animation(defending_player.player_sprite, "death");
+        }
+    }
 };
 
-// check sprite collisions - should look something like this eventually
+// check sprite collisions - TODO: fix known bug with collision logic switch statement
 void check_collisions(vector<object_data> &objects, player_data &player)
 {
     // create a collisoin vector of all active objects 
@@ -121,6 +133,7 @@ void check_collisions(vector<object_data> &objects, player_data &player)
     }
 }
 
+// update all aspects of the game: the players, any colisions, any hit checks
 void update_game(game_data &game)
 {
     // update player movement
@@ -136,11 +149,12 @@ void update_game(game_data &game)
     hit_collision(game.player_two, game.player_one);
 }
 
+// draw each of the players hearts from their respective array of hearts
 void draw_player_hearts(player_data &player)
 {
     // draw each player heart    
-    int player_one_heart_x_location = 240; // initial x location for player one first heart      
-    int player_two_heart_x_location = 840; // initial x location for player two first heart     
+    int player_one_heart_x_location = 190; // initial x location for player one first heart      
+    int player_two_heart_x_location = 940; // initial x location for player two first heart     
 
     if(player.hearts.size() != 0) // check if there are any hearts left to draw 
     {
@@ -170,21 +184,26 @@ void draw_player_hearts(player_data &player)
     }
 }
 
+// draw basic HUD information regarding both players and state of the game
 void draw_hud(player_data &player)
 {
     // draw player number
     if(player.player_number == ONE)
     {
-        draw_text("PLAYER ONE", COLOR_WHITE, 150, 1300, option_to_screen());
+        draw_text("PLAYER ONE", COLOR_WHITE, 100, 1300, option_to_screen());
     }
     else
     {
-        draw_text("PLAYER TWO", COLOR_WHITE, 750, 1300, option_to_screen());
+        draw_text("PLAYER TWO", COLOR_WHITE, 850, 1300, option_to_screen());
     }
 
     draw_player_hearts(player);
+
+    if(player.player_number == ONE && player.hearts.size() == 0) draw_text("PLAYER TWO WINS!", COLOR_WHITE, 500, 1300, option_to_screen());
+    if(player.player_number == TWO && player.hearts.size() == 0) draw_text("PLAYER ONE WINS!", COLOR_WHITE, 500, 1300, option_to_screen());
 }
 
+// draw the game to the screen with all relevent entities
 void draw_game(game_data &game)
 {
     // clear screen 

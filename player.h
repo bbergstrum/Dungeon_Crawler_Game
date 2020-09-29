@@ -3,6 +3,7 @@
 
 #include "splashkit.h"
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -31,18 +32,52 @@ struct player_key_map
     key_code attack;
 };
 
+struct player_animations 
+{
+    animation idle_up;
+    animation idle_left;
+    animation idle_down;
+    animation idle_right;
+    animation walk_up;
+    animation walk_left;
+    animation walk_down;
+    animation walk_right;
+    animation attack_up;
+    animation attack_left;
+    animation attack_down;
+    animation attack_right;
+    animation death;
+};
+
+struct player_drawing_options 
+{
+    drawing_options idle_up;
+    drawing_options idle_left;
+    drawing_options idle_down;
+    drawing_options idle_right;
+    drawing_options walk_up;
+    drawing_options walk_left;
+    drawing_options walk_down;
+    drawing_options walk_right;
+    drawing_options attack_up;
+    drawing_options attack_left;
+    drawing_options attack_down;
+    drawing_options attack_right;
+    drawing_options death;
+};
+
 struct player_data
 {
     player_number player_number;
     player_key_map player_key_map;
     sprite player_sprite;
     animation_script animation_script;
-    animation player_animation;
-    drawing_options draw_options;
+    player_animations player_animations;
+    player_drawing_options draw_options;
     direction player_direction;
     bool is_moving;
     bool is_attacking;
-    string current_animation;
+    animation current_animation;
     rectangle player_hit_box;
     rectangle atk_hit_box_up;
     rectangle atk_hit_box_left;

@@ -1,8 +1,5 @@
 #include "splashkit.h"
 #include "game_data.h"
-#include "level_data.h"
-#include "player.h"
-#include "enemy.h"
 
 /**
  * Load the game images, sounds, etc.

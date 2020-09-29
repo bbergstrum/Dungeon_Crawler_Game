@@ -2,7 +2,6 @@
 #define DUNGEON_CRAWLER_GAME_DATA
 
 #include "player.h"
-// #include "enemy.h"
 #include "level_data.h"
 #include "splashkit.h"
 

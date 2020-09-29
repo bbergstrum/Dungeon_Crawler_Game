@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// structured something like this eventually
+// level data broken up into a level bitmap with a vector of collidable objects
 struct level_data
 {
     level_type type;

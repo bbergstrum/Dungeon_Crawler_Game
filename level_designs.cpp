@@ -3,7 +3,8 @@
 #include "game_data.h"
 #include "splashkit.h"
 
-// ====================================== DEMO LEVEL =============================================
+// data for demo level objects TO-DO: Separate out data into .dat file and load in file to game.
+
 // general
 double level_height = 1200;
 double level_width = 1200;
@@ -358,11 +359,6 @@ vector<object_data> demo_level_objects =
     }
 };
 
-// ====================================== DEMO LEVEL END =========================================
-
-// ====================================== STARTER LEVEL ==========================================
-
-// ====================================== STARTER LEVEL END ======================================
 bitmap load_level(bitmap level_bitmap, level_type level_type)
 {
     switch (level_type)
@@ -387,9 +383,9 @@ bitmap load_level(bitmap level_bitmap, level_type level_type)
     return level_bitmap;
 }
 
-
 vector<object_data> load_objects(vector<object_data> &level_objects, level_type level_type)
 {
+    // load level bitmap based on level type
     switch (level_type)
     {
     case START:
