@@ -20,7 +20,7 @@ level_data load_level(level_type level_type)
     new_level.level_bitmap = load_level(new_level.level_bitmap, level_type); 
 
     // load all the corresponding objects for that level type
-    new_level.objects = load_objects(new_level.objects, level_type); 
+    new_level.objects = configure_level_objects(new_level.objects, level_type); 
 
     return new_level;
 }
@@ -35,4 +35,4 @@ void draw_level(const level_data level_to_draw, bool debug_mode)
     {
         draw_objects(level_to_draw.objects);
     }
-};
+}

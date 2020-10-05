@@ -35,6 +35,6 @@ bitmap load_level(bitmap level_bitmap, level_type level_type);
 * @param level_objects    array of objects for the respective level
 * @param level_type    the level type which determines which level to load
 */
-vector<object_data> load_objects(vector<object_data> &level_objects, level_type level_type);
+vector<object_data> configure_level_objects(vector<object_data> &level_objects, level_type level_type);
 
 #endif

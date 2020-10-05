@@ -255,7 +255,7 @@ void handle_input(player_data &player, bool &debug_mode)
         }
         
         // check if the player is moving to assign animations and movement
-        if(!player.is_attacking && player.is_moving) // npos maximum possible length of string
+        if(!player.is_attacking && player.is_moving ) // npos maximum possible length of string
         {   
             // check the direction they are moving in and apply movement
             switch (player.player_direction)
@@ -282,6 +282,7 @@ void handle_input(player_data &player, bool &debug_mode)
                     {
                         player.current_animation = player.player_animations.walk_down;
                         sprite_start_animation(player.player_sprite, "WalkDown");
+                        
                     }
                     break;
                 case RIGHT:
@@ -338,6 +339,8 @@ void handle_input(player_data &player, bool &debug_mode)
         // when the player attacks, check the direction, animate the attack in that direction
         if(key_typed(player.player_key_map.attack))
         {
+            player.is_attacking = true;
+
             switch (player.player_direction)      
             {
                 case UP:
@@ -373,15 +376,24 @@ void handle_input(player_data &player, bool &debug_mode)
                     {
                         player.current_animation = player.player_animations.attack_right;
                         sprite_start_animation(player.player_sprite, "AttkRight");
-                        player.is_attacking = true;
+                        player.is_attacking = true;                        
                     }
                     break;    
             }
         } else 
         {
-            player.is_attacking = false;
+            if (animation_ended(player.current_animation))
+            {
+                write_line("Animation Ended");
+                player.is_attacking = false;
+            }
         }
 
+        if(debug_mode)
+        {
+            write_line(animation_current_cell(player.current_animation));
+            write_line(animation_name(player.current_animation));
+        }
     }
     
     // debug mode key bind

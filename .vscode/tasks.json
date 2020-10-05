@@ -16,7 +16,15 @@
             },
             "windows": {
                 "command": "C:/msys64/usr/bin/bash.exe",
-                "args": [ "--login", "~/.splashkit/skm", "clang++", "-g", "*.cpp", "-o", "${workspaceRootFolderName}" ],
+                "args": [
+                    "--login",
+                    "~/.splashkit/skm",
+                    "clang++",
+                    "-g",
+                    "*.cpp",
+                    "-o",
+                    "${workspaceRootFolderName}"
+                ],
                 "options": {
                     "env": {
                         "MSYSTEM": "MINGW64",
@@ -28,7 +36,13 @@
             },
             "osx": {
                 "command": "skm",
-                "args": [ "clang++", "-g", "*.cpp", "-o", "${workspaceRootFolderName}" ],
+                "args": [
+                    "clang++",
+                    "-g",
+                    "*.cpp",
+                    "-o",
+                    "${workspaceRootFolderName}"
+                ],
                 "options": {
                     "env": {
                         "PATH": "${env:PATH};/home/BBerg/.splashkit"
@@ -37,7 +51,13 @@
             },
             "linux": {
                 "command": "skm",
-                "args": [ "clang++", "-g", "*.cpp", "-o", "${workspaceRootFolderName}" ],
+                "args": [
+                    "clang++",
+                    "-g",
+                    "*.cpp",
+                    "-o",
+                    "${workspaceRootFolderName}"
+                ],
                 "options": {
                     "env": {
                         "PATH": "${env:PATH};/home/BBerg/.splashkit"
@@ -58,7 +78,29 @@
                     "severity": 4,
                     "message": 5
                 }
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:/msys64/mingw64/bin/g++.exe",
+            "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "C:/msys64/mingw64/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
         }
     ],
 }

@@ -52,36 +52,24 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
         switch(attacking_player.player_direction)
         {
             case UP:
-                // write to the console attacking player performed an attack up
-                write_line("Player " + std::to_string(attacking_player.player_number) + " attacked up.");
-
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_up))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
             case LEFT:
-                // write to the console attacking player performed an attack left
-                write_line("Player " + std::to_string(attacking_player.player_number) + " attacked left.");
-
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_left))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
             case DOWN:
-                // write to the console attacking player performed an attack down
-                write_line("Player " + std::to_string(attacking_player.player_number) + " attacked down.");
-
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_down))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
             case RIGHT:
-                // write to the console attacking player performed an attack right
-                write_line("Player " + std::to_string(attacking_player.player_number) + " attacked right.");
-
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_right))
                 {
                     apply_damage(attacking_player, defending_player);
@@ -113,19 +101,19 @@ void check_collisions(vector<object_data> &objects, player_data &player)
             switch(player.player_direction)
             {
                 case UP:
-                    sprite_set_dy(player.player_sprite, 0);
+                    sprite_set_dy(player.player_sprite, - 2);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
                     break;
                 case LEFT:
-                    sprite_set_dx(player.player_sprite, 0);
+                    sprite_set_dx(player.player_sprite, - 2);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
                     break;
                 case DOWN:
-                    sprite_set_dy(player.player_sprite, 0);
+                    sprite_set_dy(player.player_sprite,  - 2);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
                     break;
                 case RIGHT:
-                    sprite_set_dx(player.player_sprite, 0);
+                    sprite_set_dx(player.player_sprite, - 2);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
                     break;
             }

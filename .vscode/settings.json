@@ -55,6 +55,12 @@
         "ctime": "cpp",
         "ratio": "cpp",
         "stop_token": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "fstream": "cpp",
+        "iostream": "cpp",
+        "cwctype": "cpp",
+        "map": "cpp",
+        "istream": "cpp",
+        "ostream": "cpp"
     },
 }
