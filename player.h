@@ -8,18 +8,18 @@ using namespace std;
 
 #define MOVEMENT_SPEED 2
 
+enum player_number
+{
+    ONE = 1,
+    TWO
+};
+
 enum direction
 {
     UP,
     LEFT,
     DOWN,
     RIGHT
-};
-
-enum player_number
-{
-    ONE = 1,
-    TWO
 };
 
 struct player_key_map

@@ -55,8 +55,12 @@ player_data create_animations(player_data &player)
 player_data create_player_sprite(player_data &player)
 {
     //load player bitmap and define cell details
-    bitmap default_bitmap = load_bitmap("PlayerBmp", "player_sprite_sheet.png");
-    bitmap_set_cell_details(default_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
+
+    bitmap player_one_bitmap = load_bitmap("player_one_bitmap", "player_one_sprite_sheet.png");
+    bitmap_set_cell_details(player_one_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
+
+    bitmap player_two_bitmap = load_bitmap("player_two_bitmap", "player_two_sprite_sheet.png");
+    bitmap_set_cell_details(player_two_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
 
     // load animation script 
     player.animation_script = load_animation_script("player_animation_script", "player_animations.txt");
@@ -65,7 +69,14 @@ player_data create_player_sprite(player_data &player)
     create_animations(player);
     
     // create the sprite
-    player.player_sprite = create_sprite("player", default_bitmap, player.animation_script);
+    if(player.player_number == ONE)
+    {
+        player.player_sprite = create_sprite("player_one", player_one_bitmap, player.animation_script);
+    }
+    else 
+    {
+        player.player_sprite = create_sprite("player_two", player_two_bitmap, player.animation_script);
+    }
 
     // begin with a default animation
     sprite_start_animation(player.player_sprite, "IdleDown");

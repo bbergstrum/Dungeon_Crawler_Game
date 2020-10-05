@@ -28,7 +28,7 @@ int main()
         process_events();
 
         handle_input(game.player_one, game.debug_mode);
-        // handle_input(game.player_two, game.debug_mode);
+        handle_input(game.player_two, game.debug_mode);
 
         update_game(game);
 
