@@ -2,9 +2,24 @@
 #define DUNGEON_CRAWLER_LEVEL_DATA
 
 #include "splashkit.h"
-#include "level_designs.h"
 
 using namespace std;
+
+// enumeration for dynamic level loading
+enum level_type
+{
+    START,
+    DUNGEON_ONE,
+    DUNGEON_TWO,
+    DUNGEON_THREE,
+    DEMO
+};
+
+struct object_data
+{
+    rectangle object_rectangle; // rectangle which represents collision boundaries
+    string name; // name of the object to identify the object among the array of objects
+};
 
 // level data broken up into a level bitmap with a vector of collidable objects
 struct level_data

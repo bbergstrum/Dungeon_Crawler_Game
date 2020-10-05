@@ -1,8 +1,7 @@
 #include "splashkit.h"
 #include "game_data.h"
-#include "player.h"
 #include "level_data.h"
-#include "level_designs.h"
+#include "player.h"
 
 using namespace std;
 

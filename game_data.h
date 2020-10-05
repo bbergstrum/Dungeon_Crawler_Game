@@ -1,10 +1,9 @@
 #ifndef DUNGEON_CRAWLER_GAME_DATA
 #define DUNGEON_CRAWLER_GAME_DATA
 
-#include "player.h"
-#include "level_data.h"
 #include "splashkit.h"
-
+#include "level_data.h"
+#include "player.h"
 
 using namespace std;
 
