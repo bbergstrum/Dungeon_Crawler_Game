@@ -30,6 +30,8 @@ int main()
         handle_input(game.player_one, game.debug_mode);
         handle_input(game.player_two, game.debug_mode);
 
+        handle_enemy_behaviour(game.enemy, game.player_one);
+
         update_game(game);
 
         draw_game(game);

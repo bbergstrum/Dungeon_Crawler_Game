@@ -149,7 +149,7 @@ player_data new_player(player_number player_number)
     set_player_position(player);
 
     // set player states
-    player.player_direction = DOWN;
+    player.player_direction = PLAYER_DOWN;
     player.is_moving = false;
     player.is_attacking = false;
 
@@ -216,25 +216,25 @@ void handle_input(player_data &player, bool &debug_mode)
             {
                 // 
                 player.is_moving = true;
-                player.player_direction = UP;
+                player.player_direction = PLAYER_UP;
                 sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.left))
             {
                 player.is_moving = true;
-                player.player_direction = LEFT;
+                player.player_direction = PLAYER_LEFT;
                 sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.down))
             {
                 player.is_moving = true;
-                player.player_direction = DOWN;
+                player.player_direction = PLAYER_DOWN;
                 sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.right))
             {
                 player.is_moving = true;
-                player.player_direction = RIGHT;
+                player.player_direction = PLAYER_RIGHT;
                 sprite_set_dx(player.player_sprite, MOVEMENT_SPEED);
             }
         }
@@ -266,12 +266,12 @@ void handle_input(player_data &player, bool &debug_mode)
         }
         
         // check if the player is moving to assign animations and movement
-        if(!player.is_attacking && player.is_moving ) // npos maximum possible length of string
+        if(!player.is_attacking && player.is_moving ) 
         {   
             // check the direction they are moving in and apply movement
             switch (player.player_direction)
             {
-                case UP:
+                case PLAYER_UP:
                     // check if walking up animation is not already being animated
                     if(player.current_animation !=  player.player_animations.walk_up)
                     {
@@ -279,7 +279,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         sprite_start_animation(player.player_sprite, "WalkUp");
                     }
                     break;
-                case LEFT:
+                case PLAYER_LEFT:
                     // check if walking left animation is not already being animated
                     if(player.current_animation != player.player_animations.walk_left)
                     {
@@ -287,7 +287,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         sprite_start_animation(player.player_sprite, "WalkLeft");
                     }
                     break;
-                case DOWN:
+                case PLAYER_DOWN:
                     // check if walking down animation is not already being animated
                     if(player.current_animation != player.player_animations.walk_down)
                     {
@@ -296,7 +296,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         
                     }
                     break;
-                case RIGHT:
+                case PLAYER_RIGHT:
                     // check if walking right animation is not already being animated
                     if(player.current_animation != player.player_animations.walk_right)
                     {
@@ -312,7 +312,7 @@ void handle_input(player_data &player, bool &debug_mode)
             // check the players direction and update the idle animation
             switch (player.player_direction)
             {
-                case UP:
+                case PLAYER_UP:
                     // check if idle up animation is not already being animated
                     if(player.current_animation != player.player_animations.idle_up)
                     {
@@ -320,7 +320,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         sprite_start_animation(player.player_sprite, "IdleUp");
                     }
                     break;
-                case LEFT:
+                case PLAYER_LEFT:
                     // check if idle left animation is not already being animated
                     if(player.current_animation != player.player_animations.idle_left)
                     {
@@ -328,7 +328,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         sprite_start_animation(player.player_sprite, "IdleLeft");
                     }
                     break;
-                case DOWN:
+                case PLAYER_DOWN:
                     // check if idle down animation is not already being animated
                     if(player.current_animation != player.player_animations.idle_down)
                     {
@@ -336,7 +336,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         sprite_start_animation(player.player_sprite, "IdleDown");
                     }
                     break;
-                case RIGHT:
+                case PLAYER_RIGHT:
                     // check if idle right animation is not already being animated
                     if(player.current_animation != player.player_animations.idle_right)
                     {
@@ -354,7 +354,7 @@ void handle_input(player_data &player, bool &debug_mode)
 
             switch (player.player_direction)      
             {
-                case UP:
+                case PLAYER_UP:
                     // check if attack up animation is not already being animated
                     if(player.current_animation != player.player_animations.attack_up)
                     {
@@ -363,7 +363,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         player.is_attacking = true;
                     }
                     break;
-                case LEFT:
+                case PLAYER_LEFT:
                     // check if attack left animation is not already being animated
                     if(player.current_animation != player.player_animations.attack_left)
                     {
@@ -372,7 +372,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         player.is_attacking = true;
                     }
                     break;
-                case DOWN:
+                case PLAYER_DOWN:
                     // check if attack down animation is not already being animated
                     if(player.current_animation != player.player_animations.attack_down)
                     {
@@ -381,7 +381,7 @@ void handle_input(player_data &player, bool &debug_mode)
                         player.is_attacking = true;
                     }
                     break;
-                case RIGHT:
+                case PLAYER_RIGHT:
                     // check if attack right animation is not already being animated
                     if(player.current_animation != player.player_animations.attack_right)
                     {
@@ -400,11 +400,11 @@ void handle_input(player_data &player, bool &debug_mode)
             }
         }
 
-        if(debug_mode)
-        {
-            write_line(animation_current_cell(player.current_animation));
-            write_line(animation_name(player.current_animation));
-        }
+        // if(debug_mode)
+        // {
+        //     write_line(animation_current_cell(player.current_animation));
+        //     write_line(animation_name(player.current_animation));
+        // }
     }
     
     // debug mode key bind

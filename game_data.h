@@ -4,6 +4,7 @@
 #include "splashkit.h"
 #include "level_data.h"
 #include "player.h"
+#include "enemy.h"
 
 using namespace std;
 
@@ -11,6 +12,8 @@ struct game_data
 {
     player_data player_one;
     player_data player_two;
+
+    enemy_data enemy;
 
     timer game_timer;
 

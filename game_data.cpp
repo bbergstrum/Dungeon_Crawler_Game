@@ -2,6 +2,7 @@
 #include "game_data.h"
 #include "level_data.h"
 #include "player.h"
+#include "enemy.h"
 
 using namespace std;
 
@@ -18,6 +19,8 @@ game_data new_game()
 
     game.player_one = new_player(ONE);
     game.player_two = new_player(TWO);
+
+    game.enemy = new_enemy();
      
     // set the game timer and start it
     game.game_timer = create_timer("game_time");
@@ -50,25 +53,25 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
         // check the attacking players direction to determine where to hit check
         switch(attacking_player.player_direction)
         {
-            case UP:
+            case PLAYER_UP:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_up))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
-            case LEFT:
+            case PLAYER_LEFT:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_left))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
-            case DOWN:
+            case PLAYER_DOWN:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_down))
                 {
                     apply_damage(attacking_player, defending_player);
                 };
                 break;
-            case RIGHT:
+            case PLAYER_RIGHT:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_right))
                 {
                     apply_damage(attacking_player, defending_player);
@@ -99,19 +102,19 @@ void check_collisions(vector<object_data> &objects, player_data &player)
             // reverse movement.
             switch(player.player_direction)
             {
-                case UP:
+                case PLAYER_UP:
                     sprite_set_dy(player.player_sprite, - 2);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
                     break;
-                case LEFT:
+                case PLAYER_LEFT:
                     sprite_set_dx(player.player_sprite, - 2);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
                     break;
-                case DOWN:
+                case PLAYER_DOWN:
                     sprite_set_dy(player.player_sprite,  - 2);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
                     break;
-                case RIGHT:
+                case PLAYER_RIGHT:
                     sprite_set_dx(player.player_sprite, - 2);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
                     break;
@@ -126,6 +129,9 @@ void update_game(game_data &game)
     // update player movement
     update_player(game.player_one);
     update_player(game.player_two);
+
+    // update the enemy
+    update_enemy(game.enemy);
 
     // check collisions between sprites and objects
     check_collisions(game.level.objects, game.player_one);
@@ -202,6 +208,9 @@ void draw_game(game_data &game)
     // redraw both players
     draw_player(game.player_one, game.debug_mode);
     draw_player(game.player_two, game.debug_mode);
+
+    // draw enemy
+    draw_enemy(game.enemy, game.debug_mode);
 
     // draw HUD
     draw_hud(game.player_one);

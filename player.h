@@ -8,18 +8,18 @@ using namespace std;
 
 #define MOVEMENT_SPEED 2
 
+enum player_direction
+{
+    PLAYER_UP,
+    PLAYER_LEFT,
+    PLAYER_DOWN,
+    PLAYER_RIGHT
+};
+
 enum player_number
 {
     ONE = 1,
     TWO
-};
-
-enum direction
-{
-    UP,
-    LEFT,
-    DOWN,
-    RIGHT
 };
 
 struct player_key_map
@@ -73,7 +73,7 @@ struct player_data
     animation_script animation_script;
     player_animations player_animations;
     player_drawing_options draw_options;
-    direction player_direction;
+    player_direction player_direction;
     bool is_moving;
     bool is_attacking;
     animation current_animation;
