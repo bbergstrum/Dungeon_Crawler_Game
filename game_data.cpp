@@ -15,13 +15,14 @@ game_data new_game()
     // set game debug mode to false intially
     game.debug_mode = false;
 
-    game.level = load_level(DEMO);
+    // game.level = load_level(DEMO);
+    game.level = load_level(START);
 
-    game.player_one = new_player(ONE);
-    game.player_two = new_player(TWO);
+    game.player_one = new_player(ONE, 575, 1130);
+    game.player_two = new_player(TWO, 575, 1130);
 
     game.enemy = new_enemy();
-     
+
     // set the game timer and start it
     game.game_timer = create_timer("game_time");
     start_timer("game_time");
@@ -95,7 +96,7 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
 void check_collisions(vector<object_data> &objects, player_data &player)
 {
     // create a collisoin vector of all active objects 
-    for(int i = 0; i < objects.size(); i++)
+    for(int i = 0; i < objects.size() - 2; i++) // we do not count the last two objects as they are event triggers
     {
         if( sprite_rectangle_collision(player.player_sprite, objects[i].object_rectangle) )
         {
@@ -123,6 +124,69 @@ void check_collisions(vector<object_data> &objects, player_data &player)
     }
 }
 
+void change_level(game_data &game, trigger_type trigger_type)
+{
+    // check the level type of the current level
+    switch (game.level.type)
+    {
+        case START:
+            // load the next level - dungeon level one
+            if(trigger_type == NEXT)
+            {
+                game.level = load_level(DUNGEON_ONE);
+                set_player_position(game.player_one, 550, 1070);
+            }
+            // start level has no previous level
+            break;
+        case DUNGEON_ONE:
+            // load the next level - dungeon level two
+            if(trigger_type == NEXT)
+            {
+                game.level = load_level(DUNGEON_TWO);
+                set_player_position(game.player_one, 550, 1070);
+            }
+            else 
+            // load the previous level - starter level
+            {
+                game.level = load_level(START);
+                // set the player at the entrance of the cave
+                set_player_position(game.player_one, 546, 218);
+            }         
+            break;
+        case DUNGEON_TWO:
+
+            break;
+        case DUNGEON_THREE:
+
+            break;
+        case DEMO: // demo has no triggers
+            break;
+    };
+}
+
+void check_event_triggers(game_data &game)
+{
+    // check if event triggered by player collision
+    for(int i = 0; i < game.level.event_triggers.size(); i++)
+    {
+        // check for player one collisions 
+        if(sprite_rectangle_collision(game.player_one.player_sprite, game.level.event_triggers[i].location))
+        {  
+            // check the trigger type of the event trigger to determine which level to load
+            if(game.level.event_triggers[i].type == 1)
+            {   
+                // change level to the next level in the sequence
+                change_level(game, NEXT);
+            }
+            else if(game.level.event_triggers[i].type == 2)
+            {
+                // change back to the previous level in the sequence
+                change_level(game, PREV);
+            }
+        }
+    }
+}
+
 // update all aspects of the game: the players, any colisions, any hit checks
 void update_game(game_data &game)
 {
@@ -140,6 +204,9 @@ void update_game(game_data &game)
     // check hit_collisions if a player performs an attack
     hit_collision(game.player_one, game.player_two);
     hit_collision(game.player_two, game.player_one);
+
+    // check if any events were triggered by the player
+    check_event_triggers(game);
 }
 
 // draw each of the players hearts from their respective array of hearts

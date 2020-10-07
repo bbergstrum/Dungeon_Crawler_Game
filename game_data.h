@@ -15,6 +15,8 @@ struct game_data
 
     enemy_data enemy;
 
+    vector<event_trigger> event_triggers;
+
     timer game_timer;
 
     bool debug_mode;

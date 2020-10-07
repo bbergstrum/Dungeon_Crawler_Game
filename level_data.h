@@ -15,6 +15,18 @@ enum level_type
     DEMO
 };
 
+enum trigger_type
+{
+    NEXT = 1,
+    PREV
+};
+
+struct event_trigger
+{
+    trigger_type type;
+    rectangle location;
+};
+
 struct object_data
 {
     rectangle object_rectangle; // rectangle which represents collision boundaries
@@ -29,6 +41,8 @@ struct level_data
     bitmap level_bitmap;
 
     vector<object_data> objects;
+
+    vector<event_trigger> event_triggers;
 };
 
 /**
@@ -36,7 +50,7 @@ struct level_data
  * 
  * @returns     The new level data
  */
-level_data load_level(level_type level_type);
+level_data load_level(const level_type &level_type);
 
 /**
 * Draws the level to the screen. 
@@ -44,6 +58,6 @@ level_data load_level(level_type level_type);
 * @param level_to_draw      The level to draw to the screen
 * @param debug_mode         If debug mode is turned on or off
 */
-void draw_level(const level_data level_to_draw, bool debug_mode);
+void draw_level(const level_data &level_to_draw, bool &debug_mode);
 
 #endif

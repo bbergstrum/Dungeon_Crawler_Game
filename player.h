@@ -86,11 +86,13 @@ struct player_data
 };
 
 /**
- * Creates a new player in the centre of the screen.
+ * creates a new player with a specified spawn location
  * 
- * @returns     The new player data
+ * @param spawn_x     x position of the new player
+ * @param spawn_y     y position of the new player
+ * @returns The new player data
  */
-player_data new_player(player_number player_number);
+player_data new_player(const player_number &player_number, const int &spawn_x, const int &spawn_y);
 
 /**
 * Draws the player to the screen. 
@@ -106,6 +108,15 @@ void draw_player(const player_data &player_to_draw, bool &debug_mode);
  * @param player      The player being updated
  */
 void update_player(player_data &player);
+
+/**
+ * Read user input and update the player based on this interaction.
+ * 
+ * @param player        The player to change position
+ * @param pos_x         x position in the level
+ * @param pos_y         y position in the level
+ */
+player_data set_player_position(player_data &player, const int &pos_x, const int &pos_y);
 
 /**
  * Read user input and update the player based on this interaction.

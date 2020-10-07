@@ -135,6 +135,10 @@ void draw_enemy(const enemy_data &enemy_to_draw, bool &debug_mode)
 // move hitboxes as the enemy moves
 void update_hit_boxes(enemy_data &enemy)
 {
+    // update and move the enemy sight as the enemy moves
+    enemy.enemy_sight = rectangle_from((center_point(enemy.enemy_sprite).x - 128), (center_point(enemy.enemy_sprite).y - 128) , 256, 256);
+
+    // update and move the hit boxes of the enemy as the enemy moves
     enemy.enemy_hit_box = rectangle_from((sprite_x(enemy.enemy_sprite) + 8), (sprite_y(enemy.enemy_sprite) + 8), 48, 64);
     enemy.atk_hit_box_up = rectangle_from((center_point(enemy.enemy_sprite).x - 16), (center_point(enemy.enemy_sprite).y - 64), 32, 32);
     enemy.atk_hit_box_left = rectangle_from((center_point(enemy.enemy_sprite).x - 80), center_point(enemy.enemy_sprite).y, 32, 32);
@@ -179,9 +183,12 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
                 if(enemy_location.y - 75 < player_location.y)
                 {
                     enemy.enemy_direction = ENEMY_LEFT;
+                    sprite_set_dx(enemy.enemy_sprite, -MOVEMENT_SPEED);
+                    
                 } else 
                 {
                     enemy.enemy_direction = ENEMY_UP;
+                    sprite_set_dy(enemy.enemy_sprite, -MOVEMENT_SPEED);
                 }
 
             } else // enemy is located further west of the player
@@ -190,15 +197,19 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
                 if(enemy_location.y + 75 < player_location.y)
                 {
                     enemy.enemy_direction = ENEMY_DOWN;
+                    sprite_set_dy(enemy.enemy_sprite, MOVEMENT_SPEED);
                 } else
                 {
                     enemy.enemy_direction = ENEMY_RIGHT;
+                    sprite_set_dx(enemy.enemy_sprite, MOVEMENT_SPEED);
                 }
             }
         }
         else 
         {
             enemy.is_moving = false;
+            sprite_set_dx(enemy.enemy_sprite, 0);
+            sprite_set_dy(enemy.enemy_sprite, 0);
         }        
         
         // walking animations

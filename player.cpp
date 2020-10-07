@@ -109,29 +109,33 @@ player_data load_key_maps(player_data &player)
 };
 
 // spawn the players in their respective locations
-player_data set_player_position(player_data &player)
+player_data set_player_position(player_data &player, const int &pos_x, const int &pos_y)
 {
     //set position x and y
     sprite_set_dx(player.player_sprite, 0);
     sprite_set_dy(player.player_sprite, 0);    
 
+    // set specified spawn location
+    sprite_set_x(player.player_sprite, pos_x);
+    sprite_set_y(player.player_sprite, pos_y);
+
     // position the players on either end of the level
-    if(player.player_number == ONE)
-    {
-        sprite_set_x(player.player_sprite, 190);
-        sprite_set_y(player.player_sprite, 285);
-    }
-    else 
-    {
-        sprite_set_x(player.player_sprite, 960);
-        sprite_set_y(player.player_sprite, 285);
-    }
+    // if(player.player_number == ONE)
+    // {
+    //     sprite_set_x(player.player_sprite, 190);
+    //     sprite_set_y(player.player_sprite, 285);
+    // }
+    // else 
+    // {
+    //     sprite_set_x(player.player_sprite, 960);
+    //     sprite_set_y(player.player_sprite, 285);
+    // }
 
     return player;
 }
 
 // create a new player 
-player_data new_player(player_number player_number)
+player_data new_player(const player_number &player_number, const int &spawn_x, const int &spawn_y)
 {
     // initialize the player
     player_data player;
@@ -146,7 +150,7 @@ player_data new_player(player_number player_number)
     create_player_sprite(player);
 
     // set the spawning position of the palyer
-    set_player_position(player);
+    set_player_position(player, spawn_x, spawn_y);
 
     // set player states
     player.player_direction = PLAYER_DOWN;
