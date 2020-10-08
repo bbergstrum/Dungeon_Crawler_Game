@@ -11,7 +11,7 @@ enum level_type
     START,
     DUNGEON_ONE,
     DUNGEON_TWO,
-    DUNGEON_THREE,
+    FINAL,
     DEMO
 };
 

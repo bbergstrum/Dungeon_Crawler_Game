@@ -183,12 +183,12 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
                 if(enemy_location.y - 75 < player_location.y)
                 {
                     enemy.enemy_direction = ENEMY_LEFT;
-                    sprite_set_dx(enemy.enemy_sprite, -MOVEMENT_SPEED);
+                    sprite_set_dx(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
                     
                 } else 
                 {
                     enemy.enemy_direction = ENEMY_UP;
-                    sprite_set_dy(enemy.enemy_sprite, -MOVEMENT_SPEED);
+                    sprite_set_dy(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
                 }
 
             } else // enemy is located further west of the player
@@ -197,11 +197,11 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
                 if(enemy_location.y + 75 < player_location.y)
                 {
                     enemy.enemy_direction = ENEMY_DOWN;
-                    sprite_set_dy(enemy.enemy_sprite, MOVEMENT_SPEED);
+                    sprite_set_dy(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
                 } else
                 {
                     enemy.enemy_direction = ENEMY_RIGHT;
-                    sprite_set_dx(enemy.enemy_sprite, MOVEMENT_SPEED);
+                    sprite_set_dx(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
                 }
             }
         }

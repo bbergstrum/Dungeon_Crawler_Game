@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define MOVEMENT_SPEED 2
+#define PLAYER_MOVEMENT_SPEED 2
 
 enum player_direction
 {

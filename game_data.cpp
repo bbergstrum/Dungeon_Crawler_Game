@@ -126,6 +126,24 @@ void check_collisions(vector<object_data> &objects, player_data &player)
 
 void change_level(game_data &game, trigger_type trigger_type)
 {
+    if(game.level.event_triggers[0].type == 1)
+    {
+        write_line("NEXT");
+    } else 
+    {
+        write_line("PREV");
+    }
+    write_line("x: " + to_string(game.level.event_triggers[0].location.x) + " y: " + to_string(game.level.event_triggers[0].location.y));
+
+    if(game.level.event_triggers[1].type == 1)
+    {
+        write_line("NEXT");
+    } else 
+    {
+        write_line("PREV");
+    }
+    write_line("x: " + to_string(game.level.event_triggers[1].location.x) + " y: " + to_string(game.level.event_triggers[1].location.y));
+
     // check the level type of the current level
     switch (game.level.type)
     {
@@ -143,7 +161,7 @@ void change_level(game_data &game, trigger_type trigger_type)
             if(trigger_type == NEXT)
             {
                 game.level = load_level(DUNGEON_TWO);
-                set_player_position(game.player_one, 550, 1070);
+                set_player_position(game.player_one, 114, 124);
             }
             else 
             // load the previous level - starter level
@@ -154,10 +172,25 @@ void change_level(game_data &game, trigger_type trigger_type)
             }         
             break;
         case DUNGEON_TWO:
-
+            // load the next level - dungeon level two
+            if(trigger_type == NEXT)
+            {
+                game.level = load_level(FINAL);
+                set_player_position(game.player_one, 600, 1116);
+            }
+            else 
+            // load the previous level - starter level
+            {
+                game.level = load_level(DUNGEON_ONE);
+                set_player_position(game.player_one, 992, 114);
+            }  
             break;
-        case DUNGEON_THREE:
-
+        case FINAL:
+            if(trigger_type == PREV)
+            {
+                game.level = load_level(DUNGEON_TWO);
+                set_player_position(game.player_one, 606, 698);
+            }
             break;
         case DEMO: // demo has no triggers
             break;
@@ -175,6 +208,7 @@ void check_event_triggers(game_data &game)
             // check the trigger type of the event trigger to determine which level to load
             if(game.level.event_triggers[i].type == 1)
             {   
+                write_line("COLLIDED WITH NEXT LEVEL TRIGGER");
                 // change level to the next level in the sequence
                 change_level(game, NEXT);
             }

@@ -7,7 +7,7 @@
 
 using namespace std;
 
-#define MOVEMENT_SPEED 2
+#define ENEMY_MOVEMENT_SPEED 2
 
 enum enemy_direction
 {

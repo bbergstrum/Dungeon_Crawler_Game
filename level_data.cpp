@@ -23,13 +23,13 @@ bitmap load_level_bitmap(bitmap &level_bitmap, const level_type &level_type)
         level_bitmap = load_bitmap("level_one", "dungeon_level_one.png");
         break;
     case DUNGEON_TWO:
-        // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_two.png");   
+        level_bitmap = load_bitmap("level_two", "dungeon_level_two.png");   
         break;
-    case DUNGEON_THREE:
-        // level_bitmap = load_bitmap("LevelBmp", "dungeon_level_three.png");
+    case FINAL:
+        level_bitmap = load_bitmap("final_boss", "final_boss_level.png");
         break;
     case DEMO:
-        level_bitmap = load_bitmap("LevelBmp", "demo_level_with_hud.png");
+        level_bitmap = load_bitmap("demo_level", "demo_level_with_hud.png");
         break;
     }
     
@@ -70,10 +70,10 @@ string select_input_file(const level_type &level_type)
             source_file = "Resources/levels/dungeon_level_one.dat";
             break;
         case DUNGEON_TWO:
-            // source_file = "Resources/levels/dungeon_level_two.dat";
+            source_file = "Resources/levels/dungeon_level_two.dat";
             break;
-        case DUNGEON_THREE:
-            // source_file = "Resources/levels/dungeon_level_three.dat";
+        case FINAL:
+            source_file = "Resources/levels/final_boss_level.dat";
             break;
         case DEMO:
             source_file = "Resources/levels/demo_level.dat";
@@ -122,16 +122,16 @@ vector<object_data> load_level_objects(const level_type &level_type)
         new_level_objects.push_back(new_object);
     }
 
-    write_line("COLLIDABLE OBJECTS: ");
+    // write_line("COLLIDABLE OBJECTS: ");
 
-    for(int i = 0; i < new_level_objects.size(); i++)
-    {
-        write_line( " x: " + to_string(new_level_objects[i].object_rectangle.x) + 
-                    " y: " + to_string(new_level_objects[i].object_rectangle.y) + 
-                    " w: " + to_string(new_level_objects[i].object_rectangle.width) + 
-                    " h: " + to_string(new_level_objects[i].object_rectangle.height)
-        );
-    }
+    // for(int i = 0; i < new_level_objects.size(); i++)
+    // {
+    //     write_line( " x: " + to_string(new_level_objects[i].object_rectangle.x) + 
+    //                 " y: " + to_string(new_level_objects[i].object_rectangle.y) + 
+    //                 " w: " + to_string(new_level_objects[i].object_rectangle.width) + 
+    //                 " h: " + to_string(new_level_objects[i].object_rectangle.height)
+    //     );
+    // }
 
     // close the data file when finished
     data_file.close();
@@ -156,15 +156,28 @@ vector<event_trigger> load_event_triggers(const level_type &level_type, vector<e
             event_triggers.push_back(new_event_trigger);
             break;
         case DUNGEON_ONE:
-            new_event_trigger.type = PREV;
+            new_event_trigger.type = NEXT;
             new_event_trigger.location = objects[objects.size() - 1].object_rectangle;
             event_triggers.push_back(new_event_trigger);
-            new_event_trigger.type = NEXT;
+            new_event_trigger.type = PREV;
             new_event_trigger.location = objects[objects.size() - 2].object_rectangle;
+            event_triggers.push_back(new_event_trigger);
             break;
         case DUNGEON_TWO:
+            new_event_trigger.type = NEXT;
+            new_event_trigger.location = objects[objects.size() - 1].object_rectangle;
+            event_triggers.push_back(new_event_trigger);
+            new_event_trigger.type = PREV;
+            new_event_trigger.location = objects[objects.size() - 2].object_rectangle;
+            event_triggers.push_back(new_event_trigger);
             break;
-        case DUNGEON_THREE:
+        case FINAL:
+            new_event_trigger.type = NEXT;
+            new_event_trigger.location = objects[objects.size() - 1].object_rectangle;
+            event_triggers.push_back(new_event_trigger);
+            new_event_trigger.type = PREV;
+            new_event_trigger.location = objects[objects.size() - 2].object_rectangle;
+            event_triggers.push_back(new_event_trigger);
             break;
         case DEMO:
             break;
@@ -194,7 +207,7 @@ void draw_objects(const vector<object_data> &objects, const level_type &level_ty
             break;
         case DUNGEON_TWO:
             break;
-        case DUNGEON_THREE:
+        case FINAL:
             break;
         case DEMO:
             break;

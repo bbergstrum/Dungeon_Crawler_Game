@@ -221,25 +221,25 @@ void handle_input(player_data &player, bool &debug_mode)
                 // 
                 player.is_moving = true;
                 player.player_direction = PLAYER_UP;
-                sprite_set_dy(player.player_sprite, -MOVEMENT_SPEED);
+                sprite_set_dy(player.player_sprite, -PLAYER_MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.left))
             {
                 player.is_moving = true;
                 player.player_direction = PLAYER_LEFT;
-                sprite_set_dx(player.player_sprite, -MOVEMENT_SPEED);
+                sprite_set_dx(player.player_sprite, -PLAYER_MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.down))
             {
                 player.is_moving = true;
                 player.player_direction = PLAYER_DOWN;
-                sprite_set_dy(player.player_sprite, MOVEMENT_SPEED);
+                sprite_set_dy(player.player_sprite, PLAYER_MOVEMENT_SPEED);
             }
             else if(key_down(player.player_key_map.right))
             {
                 player.is_moving = true;
                 player.player_direction = PLAYER_RIGHT;
-                sprite_set_dx(player.player_sprite, MOVEMENT_SPEED);
+                sprite_set_dx(player.player_sprite, PLAYER_MOVEMENT_SPEED);
             }
         }
 
