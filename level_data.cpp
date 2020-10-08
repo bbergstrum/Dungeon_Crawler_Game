@@ -1,6 +1,6 @@
-#include "level_data.h"
-#include "game_data.h"
 #include "splashkit.h"
+#include "level_data.h"
+#include "enemy.h"
 
 #include <iostream>
 #include <fstream>
@@ -57,7 +57,7 @@ vector<string> split_string(const string &object_data, const string &delimiter)
     return output;
 }
 
-string select_input_file(const level_type &level_type)
+string select_objects_input_file(const level_type &level_type)
 {
     string source_file;
    
@@ -82,6 +82,33 @@ string select_input_file(const level_type &level_type)
 
     return source_file;
 }
+
+string select_enemies_input_file(const level_type &level_type)
+{
+    string source_file;
+   
+    switch (level_type)
+    {
+        case START:
+            source_file = "Resources/enemies/starter_level_enemies.dat";
+            break;
+        case DUNGEON_ONE:
+            source_file = "Resources/enemies/d_lvl_one_enemies.dat";
+            break;
+        case DUNGEON_TWO:
+            source_file = "Resources/enemies/d_lvl_two_enemies.dat";
+            break;
+        case FINAL:
+            source_file = "Resources/enemies/final_lvl_enemies.dat";
+            break;
+        case DEMO:
+            // demo has no enemies
+            break;
+    };
+
+    return source_file;
+}
+
 vector<object_data> load_level_objects(const level_type &level_type)
 {
     // initialize a vector of object data
@@ -91,23 +118,19 @@ vector<object_data> load_level_objects(const level_type &level_type)
     object_data new_object = {};
     
     // initialize a string to store rectangle data
-    string object_details;
-
-    vector<string> rectangle_data;
+    string object_data;
 
     // store delimiter character to split string
     string delimiter = ",";
     
     // load input file depending on level type
-    ifstream data_file(select_input_file(level_type));
+    ifstream data_file(select_objects_input_file(level_type));
     
     // read each line of the .dat file - a buffer to store data, and an input stream 
-    while (getline(data_file, object_details)) 
+    while (getline(data_file, object_data)) 
     {
         //separte each value on each line into an array of strings
-        vector<string> values = split_string(object_details, delimiter);
-
-        // write_line("x: " + values[0] + " y: " + values[1] + " w: " + values[2] + " h: " + values[3]);
+        vector<string> values = split_string(object_data, delimiter);
 
         // cast each value to an int
         int x_loc = convert_to_integer(values[0]);
@@ -122,17 +145,6 @@ vector<object_data> load_level_objects(const level_type &level_type)
         new_level_objects.push_back(new_object);
     }
 
-    // write_line("COLLIDABLE OBJECTS: ");
-
-    // for(int i = 0; i < new_level_objects.size(); i++)
-    // {
-    //     write_line( " x: " + to_string(new_level_objects[i].object_rectangle.x) + 
-    //                 " y: " + to_string(new_level_objects[i].object_rectangle.y) + 
-    //                 " w: " + to_string(new_level_objects[i].object_rectangle.width) + 
-    //                 " h: " + to_string(new_level_objects[i].object_rectangle.height)
-    //     );
-    // }
-
     // close the data file when finished
     data_file.close();
 
@@ -140,6 +152,47 @@ vector<object_data> load_level_objects(const level_type &level_type)
     return new_level_objects;
 }
 
+vector<enemy_data> load_level_enemies(const level_type &level_type)
+{
+    // initialize a vector of object data
+    vector<enemy_data> new_enemies;
+
+    enemy_data enemy;
+    
+    // initialize a string to store rectangle data
+    string enemy_params;
+
+    // store delimiter character to split string
+    string delimiter = ",";
+    
+    // load input file depending on level type
+    ifstream data_file(select_enemies_input_file(level_type));
+    
+    // read each line of the .dat file - a buffer to store data, and an input stream 
+    while (getline(data_file, enemy_params)) 
+    {
+        //separte each value on each line into an array of strings
+        vector<string> values = split_string(enemy_params, delimiter);
+
+        // cast each value to an int
+        int type = convert_to_integer(values[0]);
+        int pos_x = convert_to_integer(values[1]);
+        int pos_y = convert_to_integer(values[2]);
+
+        // initialize a new enemy and push enemy details
+        enemy = new_enemy(static_cast<enemy_type>(type), pos_x, pos_y);
+        // create the rectangle for the object with the values from each line
+
+        // push the object onto the level objects array
+        new_enemies.push_back(enemy);
+    }
+
+    // close the data file when finished
+    data_file.close();
+
+    // return the level objects array
+    return new_enemies;
+}
 vector<event_trigger> load_event_triggers(const level_type &level_type, vector<event_trigger> &event_triggers, const vector<object_data> &objects)
 {
     event_trigger new_event_trigger;
@@ -226,6 +279,8 @@ level_data load_level(const level_type &level_type)
 
     // load all the corresponding objects for that level type
     new_level.objects = load_level_objects(level_type);
+
+    new_level.level_enemies = load_level_enemies(level_type);
 
     new_level.event_triggers = load_event_triggers(new_level.type, new_level.event_triggers, new_level.objects);
 

@@ -2,12 +2,21 @@
 #define DUNGEON_CRAWLER_ENEMY
 
 #include "splashkit.h"
-#include "game_data.h"
+#include "level_data.h"
+#include "player.h"
+
 #include <vector>
 
 using namespace std;
 
 #define ENEMY_MOVEMENT_SPEED 2
+#define PLAYER_BOUNDARY 64
+enum enemy_type
+{
+    SKELETON = 1,
+    ORC,
+    LIZARD_BOSS
+};
 
 enum enemy_direction
 {
@@ -54,6 +63,7 @@ struct enemy_drawing_options
 struct enemy_data
 {
     sprite enemy_sprite;
+    enemy_type enemy_type;
     animation_script animation_script;
     enemy_animations enemy_animations;
     enemy_drawing_options draw_options;
@@ -72,23 +82,27 @@ struct enemy_data
 
 /**
  * Returns a new enemy
+ * 
+ * @param enemy_type    The type of enemy to create
+ * @param pos_x         The spawn position x
+ * @param pos_y         The spawn position y
  */
-enemy_data new_enemy();
+enemy_data new_enemy(const enemy_type, const int &pos_x, const int &pos_y);
 
 /**
 * Draws the enemy to the screen. 
 * 
-* @param enemy_to_draw     The enemy to draw to the screen
+* @param enemies_to_draw     The enemy to draw to the screen
 * @param debug_mode         if debug mode enabled or not
 */
-void draw_enemy(const enemy_data &enemy_to_draw, bool &debug_mode);
+void draw_enemies(const vector<enemy_data> &enemies_to_draw, bool &debug_mode);
 
 /**
  * Actions a step update of the enemy - moving them and adjusting the camera.
  * 
- * @param enemy      The enemy being updated
+ * @param level_enemies      The vector of enemies to update
  */
-void update_enemy(enemy_data &enemy);
+void update_enemies(vector<enemy_data> level_enemies);
 
 /**
  * Read user input and update the enemy based on this interaction.

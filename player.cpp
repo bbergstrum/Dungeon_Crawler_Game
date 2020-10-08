@@ -119,18 +119,6 @@ player_data set_player_position(player_data &player, const int &pos_x, const int
     sprite_set_x(player.player_sprite, pos_x);
     sprite_set_y(player.player_sprite, pos_y);
 
-    // position the players on either end of the level
-    // if(player.player_number == ONE)
-    // {
-    //     sprite_set_x(player.player_sprite, 190);
-    //     sprite_set_y(player.player_sprite, 285);
-    // }
-    // else 
-    // {
-    //     sprite_set_x(player.player_sprite, 960);
-    //     sprite_set_y(player.player_sprite, 285);
-    // }
-
     return player;
 }
 

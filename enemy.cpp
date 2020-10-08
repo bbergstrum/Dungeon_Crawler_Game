@@ -1,5 +1,5 @@
 #include "splashkit.h"
-#include "game_data.h"
+#include "level_data.h"
 #include "player.h"
 #include "enemy.h"
 
@@ -54,11 +54,26 @@ enemy_data create_animations(enemy_data &enemy)
 }
 
 // create the enemy sprite 
-enemy_data create_enemy_sprite(enemy_data &enemy)
+enemy_data create_enemy_sprite(enemy_data &enemy, const enemy_type &enemy_type)
 {
-    //load enemy bitmap and define cell details
-    bitmap default_bitmap = load_bitmap("enemyBmp", "skeleton_enemy_sprite_sheet.png");
-    bitmap_set_cell_details(default_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
+    //load enemy bitmap 
+    bitmap enemy_bitmap;
+
+    switch (enemy.enemy_type)
+    {
+    case SKELETON:
+        enemy_bitmap = load_bitmap("skeleton_bmp", "skeleton_enemy_sprite_sheet.png");
+        break;
+    case ORC:
+        enemy_bitmap = load_bitmap("orc_bmp", "orc_enemy_sprite_sheet.png");
+        break;
+    case LIZARD_BOSS:
+        enemy_bitmap = load_bitmap("lizard_bmp", "boss_enemy_sprite_sheet.png");
+        break;
+    }
+
+    // set bitmap cell details
+    bitmap_set_cell_details(enemy_bitmap, 64, 64, 13, 21, 273); // cell width, height, cols, rows, count
 
     // load animation script 
     enemy.animation_script = load_animation_script("enemy_animation_script", "enemy_animations.txt");
@@ -67,7 +82,7 @@ enemy_data create_enemy_sprite(enemy_data &enemy)
     create_animations(enemy);
     
     // create the sprite
-    enemy.enemy_sprite = create_sprite("enemy", default_bitmap, enemy.animation_script);
+    enemy.enemy_sprite = create_sprite("enemy", enemy_bitmap, enemy.animation_script);
 
     // begin with a default animation
     sprite_start_animation(enemy.enemy_sprite, "IdleDown");
@@ -76,30 +91,32 @@ enemy_data create_enemy_sprite(enemy_data &enemy)
 }
 
 // spawn the enemys in their respective locations
-enemy_data set_enemy_position(enemy_data &enemy)
+enemy_data set_enemy_position(enemy_data &enemy, const int &pos_x, const int &pos_y)
 {
     // set velocity x and y
     sprite_set_dx(enemy.enemy_sprite, 0);
     sprite_set_dy(enemy.enemy_sprite, 0);    
 
     // set position of enemy
-    sprite_set_x(enemy.enemy_sprite, 600);
-    sprite_set_y(enemy.enemy_sprite, 725);
+    sprite_set_x(enemy.enemy_sprite, pos_x);
+    sprite_set_y(enemy.enemy_sprite, pos_y);
 
     return enemy;
 }
 
 // create a new enemy 
-enemy_data new_enemy()
+enemy_data new_enemy(const enemy_type enemy_type, const int &pos_x, const int &pos_y)
 {
     // initialize the enemy
     enemy_data enemy;
 
+    enemy.enemy_type = enemy_type;
+
     // load sprite related data
-    create_enemy_sprite(enemy);
+    create_enemy_sprite(enemy, enemy.enemy_type);
 
     // set the spawning position of the palyer
-    set_enemy_position(enemy);
+    set_enemy_position(enemy, pos_x, pos_y);
 
     // set enemy states
     enemy.enemy_direction = ENEMY_DOWN;
@@ -116,20 +133,23 @@ enemy_data new_enemy()
 }
 
 // draw a enemy to the screen
-void draw_enemy(const enemy_data &enemy_to_draw, bool &debug_mode)
+void draw_enemies(const vector<enemy_data> &enemies_to_draw, bool &debug_mode)
 {
-    draw_sprite(enemy_to_draw.enemy_sprite);
-    draw_rectangle(COLOR_RED, enemy_to_draw.enemy_sight);
-
-    // draw visible hitboxes if debug mode enabled
-    if(debug_mode)
+    for(int i = 0; i < enemies_to_draw.size(); i++)
     {
-        draw_rectangle(COLOR_GREEN, enemy_to_draw.enemy_hit_box);
-        draw_rectangle(COLOR_RED, enemy_to_draw.atk_hit_box_up);
-        draw_rectangle(COLOR_RED, enemy_to_draw.atk_hit_box_left);
-        draw_rectangle(COLOR_RED, enemy_to_draw.atk_hit_box_down);
-        draw_rectangle(COLOR_RED, enemy_to_draw.atk_hit_box_right);
-    };
+        draw_sprite(enemies_to_draw[i].enemy_sprite);
+        draw_rectangle(COLOR_RED, enemies_to_draw[i].enemy_sight);
+
+        // draw visible hitboxes if debug mode enabled
+        if(debug_mode)
+        {
+            draw_rectangle(COLOR_GREEN, enemies_to_draw[i].enemy_hit_box);
+            draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_up);
+            draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_left);
+            draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_down);
+            draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_right);
+        };
+    }
 }
 
 // move hitboxes as the enemy moves
@@ -158,6 +178,14 @@ void update_enemy(enemy_data &enemy)
     update_hit_boxes(enemy);
 }
 
+void update_enemies(vector<enemy_data> level_enemies)
+{
+    for(int i = 0; i < level_enemies.size(); i++)
+    {
+        update_enemy(level_enemies[i]);
+    }
+}
+
 // handle enemy input based on enemy actions
 void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
 {
@@ -165,44 +193,42 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
     if(enemy.health > 1)
     {
         // check for sprite_collision with a player - sight
-        if(sprite_rectangle_collision(player.player_sprite, enemy.enemy_sight))
+        if(sprite_rectangle_collision(player.player_sprite, enemy.enemy_sight) && !enemy.is_attacking)
         {
+            // movement logic
             // move towards player and animate
-            enemy.is_moving = true;
+            enemy.is_moving = true; // this is sense - you could record as "can see player"
             
             // retrieve the x and y of the enemy
             point_2d enemy_location = sprite_position(enemy.enemy_sprite);
-
+ 
             // retrieve the x and y of the player
             point_2d player_location = sprite_position(player.player_sprite);
-
+ 
             // if enemy is located further east of the player
-            if(enemy_location.x > player_location.x)
+            if(enemy_location.x > player_location.x + PLAYER_BOUNDARY)
             {
-                // if the enemy is located south east of the player
-                if(enemy_location.y - 75 < player_location.y)
-                {
-                    enemy.enemy_direction = ENEMY_LEFT;
-                    sprite_set_dx(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
-                    
-                } else 
-                {
-                    enemy.enemy_direction = ENEMY_UP;
-                    sprite_set_dy(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
-                }
-
-            } else // enemy is located further west of the player
+                sprite_set_dx(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
+                enemy.enemy_direction = ENEMY_LEFT;
+            }
+            // if enemy is located further west of the player
+              else if (enemy_location.x < player_location.x - PLAYER_BOUNDARY)
             {
-                // if the enemy is located north west of the player
-                if(enemy_location.y + 75 < player_location.y)
-                {
-                    enemy.enemy_direction = ENEMY_DOWN;
-                    sprite_set_dy(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
-                } else
-                {
-                    enemy.enemy_direction = ENEMY_RIGHT;
-                    sprite_set_dx(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
-                }
+                sprite_set_dx(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
+                enemy.enemy_direction = ENEMY_RIGHT;
+            }
+          
+            // if enemy is located further south of the player
+            if(enemy_location.y > player_location.y + PLAYER_BOUNDARY)
+            {
+                sprite_set_dy(enemy.enemy_sprite, -ENEMY_MOVEMENT_SPEED);
+                enemy.enemy_direction = ENEMY_UP;
+            }
+            // if enemy is located further north of the player
+              else if (enemy_location.y < player_location.y - PLAYER_BOUNDARY)
+            {
+                sprite_set_dy(enemy.enemy_sprite, ENEMY_MOVEMENT_SPEED);
+                enemy.enemy_direction = ENEMY_DOWN;
             }
         }
         else 
@@ -210,7 +236,7 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
             enemy.is_moving = false;
             sprite_set_dx(enemy.enemy_sprite, 0);
             sprite_set_dy(enemy.enemy_sprite, 0);
-        }        
+        }    
         
         // walking animations
         if(!enemy.is_attacking && enemy.is_moving )
@@ -253,7 +279,6 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
             }
         }
         
-        
         // idle animations
         if(!enemy.is_attacking && !enemy.is_moving)  // if the enemy isn't moving animate idle
         {
@@ -293,6 +318,16 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
                     }
                     break;    
             }
-        }    
+        }
+
+        // attacking logic
+        // if(sprite_position(enemy.enemy_sprite).x == sprite_position(enemy.enemy_sprite).x + PLAYER_BOUNDARY);
+        // if(sprite_position(enemy.enemy_sprite).x == sprite_position(enemy.enemy_sprite).x - PLAYER_BOUNDARY);
+        // if(sprite_position(enemy.enemy_sprite).y == sprite_position(enemy.enemy_sprite).y + PLAYER_BOUNDARY);
+        // if(sprite_position(enemy.enemy_sprite).y == sprite_position(enemy.enemy_sprite).y - PLAYER_BOUNDARY);
+
+        // if(sprite_position(enemy.enemy_sprite).x - (sprite_position(player.player_sprite).x + PLAYER_BOUNDARY) == 0);
+        // if(sprite_position(enemy.enemy_sprite).y - (sprite_position(player.player_sprite).y + PLAYER_BOUNDARY) == 0);
+
     }
 }

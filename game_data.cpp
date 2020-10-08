@@ -18,10 +18,8 @@ game_data new_game()
     // game.level = load_level(DEMO);
     game.level = load_level(START);
 
-    game.player_one = new_player(ONE, 575, 1130);
-    game.player_two = new_player(TWO, 575, 1130);
-
-    game.enemy = new_enemy();
+    game.player_one = new_player(ONE, 540, 1130);
+    game.player_two = new_player(TWO, 600, 1130);
 
     // set the game timer and start it
     game.game_timer = create_timer("game_time");
@@ -43,6 +41,15 @@ void apply_damage(player_data &attacking_player, player_data &defending_player)
     }
     // write to the console the defending players remaining hearts
     write_line("Player " + std::to_string(attacking_player.player_number) + " remaining hearts: " + std::to_string(defending_player.hearts.size()));
+}
+
+// check an attacking players attack against an enemy if in range
+void apply_damage(player_data &attacking_player, enemy_data &enemy)
+{
+    // remove 1 health from the enemy
+    enemy.health = enemy.health - 1;
+
+    // log some more stuff to the console later eg. combat text
 }
 
 // confirm that an attacking players attack hit another player
@@ -92,8 +99,63 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
     }
 };
 
-// check sprite collisions - TODO: fix known bug with collision logic switch statement
-void check_collisions(vector<object_data> &objects, player_data &player)
+// confirm that an attacking players attack hit an enemy
+void hit_collision(player_data &attacking_player, vector<enemy_data> &level_enemies)
+{
+    for(int i = 0; i < level_enemies.size(); i++)
+    {
+        // check if the attacking player is making an attack
+        if(attacking_player.is_attacking)
+        {
+            // check the attacking players direction to determine where to hit check
+            switch(attacking_player.player_direction)
+            {
+                case PLAYER_UP:
+                    if(sprite_rectangle_collision(level_enemies[i].enemy_sprite, attacking_player.atk_hit_box_up))
+                    {
+                        apply_damage(attacking_player, level_enemies[i]);
+                    };
+                    break;
+                case PLAYER_LEFT:
+                    if(sprite_rectangle_collision(level_enemies[i].enemy_sprite, attacking_player.atk_hit_box_left))
+                    {
+                        apply_damage(attacking_player, level_enemies[i]);
+                    };
+                    break;
+                case PLAYER_DOWN:
+                    if(sprite_rectangle_collision(level_enemies[i].enemy_sprite, attacking_player.atk_hit_box_down))
+                    {
+                        apply_damage(attacking_player, level_enemies[i]);
+                    };
+                    break;
+                case PLAYER_RIGHT:
+                    if(sprite_rectangle_collision(level_enemies[i].enemy_sprite, attacking_player.atk_hit_box_right))
+                    {
+                        apply_damage(attacking_player, level_enemies[i]);
+                    };
+                    break;
+            }
+        }
+
+        //check if an attack hit kills the enemy
+        if(level_enemies[i].health == 0)
+        {
+            // stop all movement
+            sprite_set_dx(level_enemies[i].enemy_sprite, 0);
+            sprite_set_dy(level_enemies[i].enemy_sprite, 0);
+
+            if(level_enemies[i].current_animation != level_enemies[i].enemy_animations.death)
+            {
+
+                level_enemies[i].current_animation = level_enemies[i].enemy_animations.death;
+                sprite_start_animation(level_enemies[i].enemy_sprite, "death");
+            }
+        }
+    }
+};
+
+// check player collisions - TODO: fix known bug with collision logic switch statement
+void check_player_collisions(const vector<object_data> &objects, player_data &player)
 {
     // create a collisoin vector of all active objects 
     for(int i = 0; i < objects.size() - 2; i++) // we do not count the last two objects as they are event triggers
@@ -104,21 +166,56 @@ void check_collisions(vector<object_data> &objects, player_data &player)
             switch(player.player_direction)
             {
                 case PLAYER_UP:
-                    sprite_set_dy(player.player_sprite, - 2);
+                    sprite_set_dy(player.player_sprite, 0);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) + 2));
                     break;
                 case PLAYER_LEFT:
-                    sprite_set_dx(player.player_sprite, - 2);
+                    sprite_set_dx(player.player_sprite, 0);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) + 2));
                     break;
                 case PLAYER_DOWN:
-                    sprite_set_dy(player.player_sprite,  - 2);
+                    sprite_set_dy(player.player_sprite,  0);
                     sprite_set_y(player.player_sprite, (sprite_y(player.player_sprite) - 2));
                     break;
                 case PLAYER_RIGHT:
-                    sprite_set_dx(player.player_sprite, - 2);
+                    sprite_set_dx(player.player_sprite, 0);
                     sprite_set_x(player.player_sprite, (sprite_x(player.player_sprite) - 2));
                     break;
+            }
+        }
+    }
+}
+
+// check enemy collisions - TODO: fix known bug with collision logic switch statement
+void check_enemy_collisions(const vector<object_data> &objects, vector<enemy_data> &level_enemies)
+{
+    for(int j = 0; j < level_enemies.size(); j++)
+    {
+        // create a collisoin vector of all active objects 
+        for(int i = 0; i < objects.size() - 2; i++) // we do not count the last two objects as they are event triggers
+        {
+            if( sprite_rectangle_collision(level_enemies[j].enemy_sprite, objects[i].object_rectangle) )
+            {
+                // reverse movement.
+                switch(level_enemies[j].enemy_direction)
+                {
+                    case ENEMY_UP:
+                        sprite_set_dy(level_enemies[j].enemy_sprite, 0);
+                        sprite_set_y(level_enemies[j].enemy_sprite, (sprite_y(level_enemies[j].enemy_sprite) + 2));
+                        break;
+                    case ENEMY_LEFT:
+                        sprite_set_dx(level_enemies[j].enemy_sprite, 0);
+                        sprite_set_x(level_enemies[j].enemy_sprite, (sprite_x(level_enemies[j].enemy_sprite) + 2));
+                        break;
+                    case ENEMY_DOWN:
+                        sprite_set_dy(level_enemies[j].enemy_sprite,  0);
+                        sprite_set_y(level_enemies[j].enemy_sprite, (sprite_y(level_enemies[j].enemy_sprite) - 2));
+                        break;
+                    case ENEMY_RIGHT:
+                        sprite_set_dx(level_enemies[j].enemy_sprite, 0);
+                        sprite_set_x(level_enemies[j].enemy_sprite, (sprite_x(level_enemies[j].enemy_sprite) - 2));
+                        break;
+                }
             }
         }
     }
@@ -208,7 +305,6 @@ void check_event_triggers(game_data &game)
             // check the trigger type of the event trigger to determine which level to load
             if(game.level.event_triggers[i].type == 1)
             {   
-                write_line("COLLIDED WITH NEXT LEVEL TRIGGER");
                 // change level to the next level in the sequence
                 change_level(game, NEXT);
             }
@@ -229,15 +325,17 @@ void update_game(game_data &game)
     update_player(game.player_two);
 
     // update the enemy
-    update_enemy(game.enemy);
+    update_enemies(game.level.level_enemies);
 
     // check collisions between sprites and objects
-    check_collisions(game.level.objects, game.player_one);
-    check_collisions(game.level.objects, game.player_two);
+    check_player_collisions(game.level.objects, game.player_one);
+    check_player_collisions(game.level.objects, game.player_two);
+    check_enemy_collisions(game.level.objects, game.level.level_enemies);
 
     // check hit_collisions if a player performs an attack
     hit_collision(game.player_one, game.player_two);
     hit_collision(game.player_two, game.player_one);
+    hit_collision(game.player_one, game.level.level_enemies);
 
     // check if any events were triggered by the player
     check_event_triggers(game);
@@ -311,7 +409,7 @@ void draw_game(game_data &game)
     draw_player(game.player_two, game.debug_mode);
 
     // draw enemy
-    draw_enemy(game.enemy, game.debug_mode);
+    draw_enemies(game.level.level_enemies, game.debug_mode);
 
     // draw HUD
     draw_hud(game.player_one);

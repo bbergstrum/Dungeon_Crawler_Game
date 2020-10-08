@@ -2,6 +2,7 @@
 #define DUNGEON_CRAWLER_LEVEL_DATA
 
 #include "splashkit.h"
+#include "enemy.h"
 
 using namespace std;
 
@@ -43,6 +44,8 @@ struct level_data
     vector<object_data> objects;
 
     vector<event_trigger> event_triggers;
+
+    vector<enemy_data> level_enemies;
 };
 
 /**

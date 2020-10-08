@@ -13,16 +13,28 @@ struct game_data
     player_data player_one;
     player_data player_two;
 
-    enemy_data enemy;
-
-    vector<event_trigger> event_triggers;
-
     timer game_timer;
 
     bool debug_mode;
 
     level_data level;
 };
+
+// /**
+//  * Checks if a player collides with an object
+//  * 
+//  * @param objects the vector of objects to check rectangle collisions on
+//  * @param player  the sprite to check rectangle collisons on
+//  */
+// void check_player_collisions(const vector<object_data> &objects, player_data &player);
+
+// /**
+//  * Checks if a enemy collides with an object
+//  * 
+//  * @param objects the vector of objects to check rectangle collisions on
+//  * @param level_enemies  the vector of enemies to check rectangle collisons on
+//  */
+// void check_enemy_collisions(const vector<object_data> &objects, vector<enemy_data> &level_enemies);
 
 /**
  * Checks if a players attack hits another sprite
@@ -44,7 +56,7 @@ game_data new_game();
  * 
  * @param game_to_update    The game to update 
  */
-void update_game(game_data &game_to_update);
+void update_game(game_data &game);
 
 /**
  * Creates a new game with game data.
