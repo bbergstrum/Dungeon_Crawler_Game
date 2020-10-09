@@ -138,11 +138,11 @@ void draw_enemies(const vector<enemy_data> &enemies_to_draw, bool &debug_mode)
     for(int i = 0; i < enemies_to_draw.size(); i++)
     {
         draw_sprite(enemies_to_draw[i].enemy_sprite);
-        draw_rectangle(COLOR_RED, enemies_to_draw[i].enemy_sight);
-
+        
         // draw visible hitboxes if debug mode enabled
         if(debug_mode)
         {
+            draw_rectangle(COLOR_RED, enemies_to_draw[i].enemy_sight);
             draw_rectangle(COLOR_GREEN, enemies_to_draw[i].enemy_hit_box);
             draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_up);
             draw_rectangle(COLOR_RED, enemies_to_draw[i].atk_hit_box_left);
