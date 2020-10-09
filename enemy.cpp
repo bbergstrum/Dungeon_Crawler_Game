@@ -1,4 +1,5 @@
 #include "splashkit.h"
+#include "game_data.h"
 #include "level_data.h"
 #include "player.h"
 #include "enemy.h"
@@ -179,7 +180,7 @@ void update_enemy(enemy_data &enemy)
     update_hit_boxes(enemy);
 }
 
-void update_enemies(vector<enemy_data> level_enemies)
+void update_enemies(vector<enemy_data> &level_enemies)
 {
     // iterate over all the levels enemies and update them
     for(int i = 0; i < level_enemies.size(); i++)
@@ -191,22 +192,22 @@ void update_enemies(vector<enemy_data> level_enemies)
 // handle enemy input based on enemy actions
 void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
 {
+    // retrieve the x and y of the enemy
+    point_2d enemy_location = sprite_position(enemy.enemy_sprite);
+
+    // retrieve the x and y of the player
+    point_2d player_location = sprite_position(player.player_sprite);
+    
     // disable input if enemy is dead
     if(enemy.health > 1)
     {
         // check for sprite_collision with a player - sight
-        if(sprite_rectangle_collision(player.player_sprite, enemy.enemy_sight) && !enemy.is_attacking)
+        if(sprite_rectangle_collision(player.player_sprite, enemy.enemy_sight))
         {
             // movement logic
             // move towards player and animate
             enemy.is_moving = true; // this is sense - you could record as "can see player"
-            
-            // retrieve the x and y of the enemy
-            point_2d enemy_location = sprite_position(enemy.enemy_sprite);
- 
-            // retrieve the x and y of the player
-            point_2d player_location = sprite_position(player.player_sprite);
- 
+  
             // if enemy is located further east of the player
             if(enemy_location.x > player_location.x + PLAYER_BOUNDARY)
             {
@@ -322,14 +323,55 @@ void handle_enemy_behaviour(enemy_data &enemy, player_data &player)
             }
         }
 
-        // attacking logic
-        // if(sprite_position(enemy.enemy_sprite).x == sprite_position(enemy.enemy_sprite).x + PLAYER_BOUNDARY);
-        // if(sprite_position(enemy.enemy_sprite).x == sprite_position(enemy.enemy_sprite).x - PLAYER_BOUNDARY);
-        // if(sprite_position(enemy.enemy_sprite).y == sprite_position(enemy.enemy_sprite).y + PLAYER_BOUNDARY);
-        // if(sprite_position(enemy.enemy_sprite).y == sprite_position(enemy.enemy_sprite).y - PLAYER_BOUNDARY);
 
-        // if(sprite_position(enemy.enemy_sprite).x - (sprite_position(player.player_sprite).x + PLAYER_BOUNDARY) == 0);
-        // if(sprite_position(enemy.enemy_sprite).y - (sprite_position(player.player_sprite).y + PLAYER_BOUNDARY) == 0);
-
+        //TODO: finish enemy attack animations and attacking the player
+        // if the a player collides with an enemies attack hit box and they haven't recently attacked
+        // if(sprite_rectangle_collision(player.player_sprite, enemy.atk_hit_box_up))
+        // {
+        //     enemy.is_attacking = true;
+        //     enemy.current_animation = enemy.enemy_animations.attack_up;
+        //     if(enemy.current_animation != enemy.enemy_animations.attack_up)
+        //     {
+        //         sprite_start_animation(enemy.enemy_sprite, "AttkUp");
+        //     }
+        //     apply_damage(player);
+        // } 
+        // else if(sprite_rectangle_collision(player.player_sprite, enemy.atk_hit_box_left))
+        // {
+        //     enemy.is_attacking = true;
+        //     enemy.current_animation = enemy.enemy_animations.attack_left;
+        //     if(enemy.current_animation != enemy.enemy_animations.attack_left)
+        //     {
+        //         sprite_start_animation(enemy.enemy_sprite, "AttkLeft");
+        //     }
+        //     apply_damage(player);
+        // } 
+        // else if(sprite_rectangle_collision(player.player_sprite, enemy.atk_hit_box_down))
+        // {
+        //     enemy.is_attacking = true;
+        //     enemy.current_animation = enemy.enemy_animations.attack_down;
+        //     if(enemy.current_animation != enemy.enemy_animations.attack_down)
+        //     {
+        //         sprite_start_animation(enemy.enemy_sprite, "AttkDown");
+        //     }
+        //     apply_damage(player);
+        // } 
+        // else if(sprite_rectangle_collision(player.player_sprite, enemy.atk_hit_box_right))
+        // {
+        //     enemy.is_attacking = true;
+        //     enemy.current_animation = enemy.enemy_animations.attack_right;
+        //     if(enemy.current_animation != enemy.enemy_animations.attack_right)
+        //     {
+        //         sprite_start_animation(enemy.enemy_sprite, "AttkRight");
+        //     }
+        //     apply_damage(player);
+        // } 
+        // else 
+        // {
+        //     if(animation_ended(enemy.current_animation))
+        //     {
+        //         enemy.is_attacking = false;
+        //     }
+        // }
     }
 }

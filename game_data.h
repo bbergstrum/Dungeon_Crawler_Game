@@ -13,7 +13,9 @@ struct game_data
     player_data player_one;
     player_data player_two;
 
-    timer game_timer;
+    timer player_one_attack_timer;    
+    timer player_two_attack_timer;    
+    vector<timer> enemy_attack_timers;    
 
     bool debug_mode;
 
@@ -35,6 +37,13 @@ struct game_data
 //  * @param level_enemies  the vector of enemies to check rectangle collisons on
 //  */
 // void check_enemy_collisions(const vector<object_data> &objects, vector<enemy_data> &level_enemies);
+
+/**
+ * Checks if a players attack hits another sprite
+ * 
+ * @param defending_player the player defending the attack
+ */
+void apply_damage(player_data &defending_sprite);
 
 /**
  * Checks if a players attack hits another sprite

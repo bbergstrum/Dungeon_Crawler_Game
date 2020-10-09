@@ -6,6 +6,34 @@
 
 using namespace std;
 
+void setup_attack_timers(game_data &game)
+{
+    // create attack timers for both players
+    game.player_one_attack_timer = create_timer("player_one");
+    game.player_two_attack_timer = create_timer("player_one");
+
+    // start player timers
+    start_timer("player_one");
+    start_timer("player_two");
+
+    // create attack timers for every enemy in the level
+    for(int i = 0; i < game.level.level_enemies.size(); i++)
+    {
+        timer new_enemy_timer;
+        string enemy_timer_name = "enemy_" + to_string(i + 1); 
+        new_enemy_timer = create_timer(enemy_timer_name);
+
+        game.enemy_attack_timers.push_back(new_enemy_timer);
+    }
+
+    // start attack timers for every enemy in the level
+    for(int i = 0; i < game.enemy_attack_timers.size(); i++)
+    {
+        string enemy_timer_name = "enemy_" + to_string(i + 1); 
+        start_timer(enemy_timer_name);
+    }
+}
+
 // create a new game to start 
 game_data new_game()
 {
@@ -21,29 +49,23 @@ game_data new_game()
     game.player_one = new_player(ONE, 540, 1130);
     game.player_two = new_player(TWO, 600, 1130);
 
-    // set the game timer and start it
-    game.game_timer = create_timer("game_time");
-    start_timer("game_time");
+    // setup game attack timers for each sprite
+    setup_attack_timers(game);
 
     return game;
 }
 
-// check an attacking players attack against a defending player if in range
-void apply_damage(player_data &attacking_player, player_data &defending_player)
+// apply damage to a defending player 
+void apply_damage(player_data &defending_sprite)
 {
-    // write to the console the attack hit
-    write_line("Player " + std::to_string(attacking_player.player_number) + " hit Player " + std::to_string(defending_player.player_number) + "!");
-    
     // pop off one of the hearts
-    if(defending_player.hearts.size() != 0) // remove 1 heart if there are hearts to remove
+    if(defending_sprite.hearts.size() != 0) // remove 1 heart if there are hearts to remove
     {
-        defending_player.hearts.pop_back();
+        defending_sprite.hearts.pop_back();
     }
-    // write to the console the defending players remaining hearts
-    write_line("Player " + std::to_string(attacking_player.player_number) + " remaining hearts: " + std::to_string(defending_player.hearts.size()));
 }
 
-// check an attacking players attack against an enemy if in range
+// apply damage from an attacking players attack to
 void apply_damage(player_data &attacking_player, enemy_data &enemy)
 {
     // remove 1 health from the enemy
@@ -64,25 +86,25 @@ void hit_collision(player_data &attacking_player, player_data &defending_player)
             case PLAYER_UP:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_up))
                 {
-                    apply_damage(attacking_player, defending_player);
+                    apply_damage(defending_player);
                 };
                 break;
             case PLAYER_LEFT:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_left))
                 {
-                    apply_damage(attacking_player, defending_player);
+                    apply_damage(defending_player);
                 };
                 break;
             case PLAYER_DOWN:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_down))
                 {
-                    apply_damage(attacking_player, defending_player);
+                    apply_damage(defending_player);
                 };
                 break;
             case PLAYER_RIGHT:
                 if(sprite_rectangle_collision(defending_player.player_sprite, attacking_player.atk_hit_box_right))
                 {
-                    apply_damage(attacking_player, defending_player);
+                    apply_damage(defending_player);
                 };
                 break;
         }

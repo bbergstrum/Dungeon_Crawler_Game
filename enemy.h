@@ -102,13 +102,14 @@ void draw_enemies(const vector<enemy_data> &enemies_to_draw, bool &debug_mode);
  * 
  * @param level_enemies      The vector of enemies to update
  */
-void update_enemies(vector<enemy_data> level_enemies);
+void update_enemies(vector<enemy_data> &level_enemies);
 
 /**
  * Read user input and update the enemy based on this interaction.
  * 
  * @param enemy         The enemy to update
  * @param player        The player to detect
+ * @param enemy_timer_ticks timer to ensure enemy can only attack every 4 seconds
  */
 void handle_enemy_behaviour(enemy_data &enemy, player_data &player);
 
