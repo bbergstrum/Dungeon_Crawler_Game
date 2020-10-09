@@ -1,6 +1,15 @@
-//player
-BITMAP, player, player_sprite_sheet.png
+// players
+BITMAP, player_one, player_one_sprite_sheet.png
+BITMAP, player_two, player_two_sprite_sheet.png
 
-// implement eventually:
-// BITMAP, enemy, enemy_sprite_sheet.png
-// BITMAP, level, level.png
+// enemies
+BITMAP, skeleton_enemy, skeleton_enemy_sprite_sheet.png
+BITMAP, orc_enemy, orc_enemy_sprite_sheet.png
+BITMAP, boss_enemy, boss_enemy_sprite_sheet.png
+
+// levels
+BITMAP, start_level, starting_level.png
+BITMAP, level_one, dungeon_level_one.png
+BITMAP, level_two, dungeon_level_two.png
+BITMAP, final_level, final_boss_level.png
+BITMAP, demo_level, demo_level_with_hud.png

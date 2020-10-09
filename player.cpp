@@ -387,16 +387,9 @@ void handle_input(player_data &player, bool &debug_mode)
         {
             if (animation_ended(player.current_animation))
             {
-                write_line("Animation Ended");
                 player.is_attacking = false;
             }
         }
-
-        // if(debug_mode)
-        // {
-        //     write_line(animation_current_cell(player.current_animation));
-        //     write_line(animation_name(player.current_animation));
-        // }
     }
     
     // debug mode key bind

@@ -252,17 +252,23 @@ void draw_objects(const vector<object_data> &objects, const level_type &level_ty
     {
         // draw event triggers yellow
         case START:
-            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle); 
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle); // next
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 2].object_rectangle); // prev - none
             break;
         case DUNGEON_ONE:
-            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle);
-            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 2].object_rectangle);
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle); // next
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 2].object_rectangle); // prev
             break;
         case DUNGEON_TWO:
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle); // next
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 2].object_rectangle); // prev
             break;
         case FINAL:
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 1].object_rectangle); // next - none
+            draw_rectangle(COLOR_YELLOW, objects[objects.size() - 2].object_rectangle); // prev
             break;
         case DEMO:
+            // demo has no event triggers
             break;
     };
 
@@ -280,20 +286,11 @@ level_data load_level(const level_type &level_type)
     // load all the corresponding objects for that level type
     new_level.objects = load_level_objects(level_type);
 
+    // load all the corresponding enemies for that level type
     new_level.level_enemies = load_level_enemies(level_type);
 
+    // load all the corresponding event triggers for that level type - transitioning between levels
     new_level.event_triggers = load_event_triggers(new_level.type, new_level.event_triggers, new_level.objects);
-
-    write_line("EVENT TRIGGERS: ");
-    for(int i = 0; i < new_level.event_triggers.size(); i++)
-    {
-        
-        write_line( " x: " + to_string(new_level.event_triggers[i].location.x) + 
-                    " y: " + to_string(new_level.event_triggers[i].location.y) + 
-                    " w: " + to_string(new_level.event_triggers[i].location.width) + 
-                    " h: " + to_string(new_level.event_triggers[i].location.height)
-                    );
-    }
 
     return new_level;
 }

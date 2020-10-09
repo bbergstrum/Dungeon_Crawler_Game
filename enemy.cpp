@@ -135,6 +135,7 @@ enemy_data new_enemy(const enemy_type enemy_type, const int &pos_x, const int &p
 // draw a enemy to the screen
 void draw_enemies(const vector<enemy_data> &enemies_to_draw, bool &debug_mode)
 {
+    // draw every enemy's sprite to the screen
     for(int i = 0; i < enemies_to_draw.size(); i++)
     {
         draw_sprite(enemies_to_draw[i].enemy_sprite);
@@ -180,6 +181,7 @@ void update_enemy(enemy_data &enemy)
 
 void update_enemies(vector<enemy_data> level_enemies)
 {
+    // iterate over all the levels enemies and update them
     for(int i = 0; i < level_enemies.size(); i++)
     {
         update_enemy(level_enemies[i]);

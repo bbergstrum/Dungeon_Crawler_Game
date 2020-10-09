@@ -223,24 +223,6 @@ void check_enemy_collisions(const vector<object_data> &objects, vector<enemy_dat
 
 void change_level(game_data &game, trigger_type trigger_type)
 {
-    if(game.level.event_triggers[0].type == 1)
-    {
-        write_line("NEXT");
-    } else 
-    {
-        write_line("PREV");
-    }
-    write_line("x: " + to_string(game.level.event_triggers[0].location.x) + " y: " + to_string(game.level.event_triggers[0].location.y));
-
-    if(game.level.event_triggers[1].type == 1)
-    {
-        write_line("NEXT");
-    } else 
-    {
-        write_line("PREV");
-    }
-    write_line("x: " + to_string(game.level.event_triggers[1].location.x) + " y: " + to_string(game.level.event_triggers[1].location.y));
-
     // check the level type of the current level
     switch (game.level.type)
     {
