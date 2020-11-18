@@ -6,6 +6,12 @@ An interactive orthogonal dungeon crawler style game developed with C++ and Spla
 
   - Interactive single player
   - Interactive two player
+  
+### Demonstration
+
+The current version of Dungeon Crawler has been showcased on Deakin Air with some known bugs.
+
+[Deakin Air Video Demo](https://video.deakin.edu.au/media/1_tbok2r7j) 
 
 ### Tech
 
@@ -13,12 +19,6 @@ Dungeon Crawler uses C++, an open source library called Splashkit and artwork fr
 
 * [Splashkit](https://www.splashkit.io/) - an all-purpose software toolkit.
 * [Liberated Pixel Cup](https://lpc.opengameart.org/) - awesome free culture licensed artwork
-
-### Demonstration
-
-The current version of Dungeon Crawler has been showcased on Deakin Air with some known bugs.
-
-[Deakin Air Video Demo](https://video.deakin.edu.au/media/1_tbok2r7j) 
 
 License
 ----
